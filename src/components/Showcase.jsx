@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Music, Lightbulb, MapPin, Play, Sparkles, Navigation, RotateCw, Send, CheckCircle } from 'lucide-react';
+import { Music, Lightbulb, MapPin, Play, Sparkles, Navigation, Send, CheckCircle } from 'lucide-react';
 import { sound } from '../utils/audio';
 
 const PENTATONIC_KEYS = [
@@ -150,18 +150,6 @@ export default function Showcase() {
                   <span className="music-note-float note-3">🎶</span>
                 </div>
               )}
-
-              {/* Animated Brass Winding Key Visual */}
-              <div
-                className="winding-key-badge"
-                style={{
-                  transform: `rotate(${windingDegrees}deg)`,
-                  transition: isPlayingMelody ? 'transform 3.4s linear' : 'transform 0.3s ease',
-                }}
-                title="Brass Winding Key"
-              >
-                <RotateCw size={18} color="#d97706" />
-              </div>
             </div>
 
             <div className="project-interactive-box">
@@ -171,13 +159,13 @@ export default function Showcase() {
                 </span>
                 <button
                   type="button"
-                  className="btn btn-secondary btn-pill"
+                  className="btn btn-primary btn-pill"
                   onClick={handlePlayLullaby}
                   disabled={isPlayingMelody}
-                  aria-label="Play sleepy lullaby melody"
+                  aria-label="Wind music box and play sleepy lullaby melody"
                 >
                   <Play size={13} fill="currentColor" />
-                  <span>{isPlayingMelody ? 'Playing...' : 'Play Sleepy Lullaby'}</span>
+                  <span>{isPlayingMelody ? 'Playing Lullaby...' : 'Wind & Play Lullaby'}</span>
                 </button>
               </div>
 

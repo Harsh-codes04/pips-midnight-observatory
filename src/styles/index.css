@@ -537,27 +537,40 @@ h1, h2, h3, h4, .font-serif {
 
 .project-img-frame {
   width: 100%;
-  height: 200px;
-  border-radius: 16px;
+  height: 210px;
+  border-radius: 20px;
   background: var(--bg-card-subtle);
-  border: 1px dashed var(--border-light);
+  border: 1.5px solid var(--border-light);
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 1.4rem;
   position: relative;
   overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+[data-theme='dream'] .project-img-frame {
+  background: rgba(255, 248, 241, 0.05);
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
 .project-preview-img {
-  max-height: 170px;
+  max-height: 175px;
   width: auto;
+  border-radius: 14px;
   object-fit: contain;
-  transition: transform 0.4s ease;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  box-shadow: 0 4px 16px rgba(92, 64, 51, 0.1);
+}
+
+[data-theme='dream'] .project-preview-img {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .project-card:hover .project-preview-img {
-  transform: scale(1.08) rotate(-1deg);
+  transform: scale(1.05);
 }
 
 .project-name {
@@ -1216,22 +1229,6 @@ h1, h2, h3, h4, .font-serif {
   border: 1px solid var(--berry-border);
   border-radius: 14px;
   padding: 0.85rem 1.1rem;
-}
-
-/* Winding Key Badge */
-.winding-key-badge {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: var(--bg-card);
-  border: 1.5px solid #d97706;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 /* Floating Music Notes */
