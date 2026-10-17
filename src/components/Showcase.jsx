@@ -42,6 +42,18 @@ export default function Showcase() {
   const [deliveryProgress, setDeliveryProgress] = useState(0);
   const [flightStatusMsg, setFlightStatusMsg] = useState('Waiting on launchpad at Midnight Nursery');
 
+  // Star Rattle Toy State
+  const [rattleCount, setRattleCount] = useState(0);
+  const [isRattling, setIsRattling] = useState(false);
+
+  const handleShakeRattle = () => {
+    sound.unmute();
+    sound.playRattle();
+    setRattleCount((prev) => prev + 1);
+    setIsRattling(true);
+    setTimeout(() => setIsRattling(false), 350);
+  };
+
   const handlePlayKey = (key) => {
     sound.unmute();
     setActiveNote(key.note);
@@ -357,6 +369,67 @@ export default function Showcase() {
                   Status: {flightStatusMsg}
                 </div>
               </div>
+            </div>
+          </div>
+
+          {/* =================================================================
+              Showcase Project 4: Pip's Star Rattle Toy
+             ================================================================= */}
+          <div className="project-card">
+            <div>
+              <span className="project-tag">Invention 04 · Playable Nursery Toy</span>
+              <h3 className="project-name">The Star Rattle</h3>
+              <p className="project-summary">
+                Pip's wind-carved wooden rattle filled with polished moonstone beads. Gives anxious little sleepers
+                a gentle, rhythmic shake to lull them into dreams.
+              </p>
+            </div>
+
+            <div
+              className="project-img-frame"
+              onClick={handleShakeRattle}
+              style={{ cursor: 'pointer', flexDirection: 'column' }}
+              title="Click or tap to shake Pip's rattle!"
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') handleShakeRattle();
+              }}
+              aria-label="Shake Pip's star rattle toy"
+            >
+              <div
+                className={`star-rattle-toy ${isRattling ? 'shaking' : ''}`}
+                style={{ fontSize: '4.2rem', userSelect: 'none', transition: 'transform 0.15s ease' }}
+              >
+                🪄⭐
+              </div>
+
+              {isRattling && (
+                <div className="rattle-sparkles" aria-hidden="true">
+                  <span className="rattle-sparkle-1">✨</span>
+                  <span className="rattle-sparkle-2">💫</span>
+                  <span className="rattle-sparkle-3">⭐</span>
+                </div>
+              )}
+            </div>
+
+            <div className="project-interactive-box">
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span className="font-mono text-xs" style={{ color: 'var(--text-muted)' }}>
+                  Total Shakes: <strong>{rattleCount}</strong>
+                </span>
+                <button
+                  type="button"
+                  className="btn btn-primary btn-pill"
+                  onClick={handleShakeRattle}
+                  aria-label="Shake rattle"
+                >
+                  <span>Shake Rattle! 🔔</span>
+                </button>
+              </div>
+              <p className="font-mono text-xs" style={{ textAlign: 'center', color: 'var(--text-faint)', marginTop: '0.6rem' }}>
+                {rattleCount > 0 ? `Pip smiles softly · ${rattleCount} bedtime beats` : 'Click the toy or button to shake'}
+              </p>
             </div>
           </div>
         </div>

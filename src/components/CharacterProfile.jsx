@@ -30,9 +30,9 @@ export default function CharacterProfile() {
           {/* Identity ID Card */}
           <div className="profile-card">
             <div className="profile-badge-row">
-              <span className="profile-id-tag">ID: PIP-001-DREAM</span>
-              <span className="profile-status-pill">
-                <Check size={12} /> Verified Junior Engineer
+              <span className="profile-id-tag">Midnight Nursery Staff Card</span>
+              <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontStyle: 'italic' }}>
+                ⭐ Night Shift
               </span>
             </div>
 

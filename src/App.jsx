@@ -12,6 +12,7 @@ import SideQuests from './components/SideQuests';
 import Footer from './components/Footer';
 import EasterEggModal from './components/EasterEggModal';
 import SparkleTrail from './components/SparkleTrail';
+import LanternBeam from './components/LanternBeam';
 
 export default function App() {
   const [theme, setTheme] = useState('day');
@@ -19,6 +20,7 @@ export default function App() {
   const [isEasterEggOpen, setIsEasterEggOpen] = useState(false);
   const [pipClickCount, setPipClickCount] = useState(0);
   const [isChaosMode, setIsChaosMode] = useState(false);
+  const [isLanternOn, setIsLanternOn] = useState(true);
 
   // Sync mute state
   useEffect(() => {
@@ -82,12 +84,17 @@ export default function App() {
       {/* Sparkle cursor trail (respects reduced motion) */}
       <SparkleTrail />
 
+      {/* Tier 2 Standout: Interactive Lantern Beam Spotlight */}
+      <LanternBeam isActive={isLanternOn} />
+
       {/* Navigation bar with mobile menu and theme controls */}
       <Navbar
         theme={theme}
         onToggleTheme={toggleTheme}
         onTriggerConfetti={triggerConfetti}
         onSecretMoonEgg={handleSecretMoonEgg}
+        isLanternOn={isLanternOn}
+        onToggleLantern={() => setIsLanternOn((prev) => !prev)}
       />
 
       <main id="main-content">

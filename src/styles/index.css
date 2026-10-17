@@ -816,6 +816,114 @@ h1, h2, h3, h4, .font-serif {
   margin-bottom: 0.2rem;
 }
 
+/* Bedtime Stamp Passport (Early-Web Sticker Album Souvenir) */
+.stamp-passport-card {
+  margin-top: 2rem;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-light);
+  border-radius: 24px;
+  padding: 1.8rem 2rem;
+  box-shadow: var(--shadow-card);
+}
+
+.stamps-grid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+  margin: 1.2rem 0;
+}
+
+.bedtime-stamp {
+  flex: 1 1 120px;
+  max-width: 150px;
+  min-height: 110px;
+  border: 2px dashed var(--border-light);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  background: var(--bg-card-subtle);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  user-select: none;
+  padding: 0.75rem 0.5rem;
+}
+
+.bedtime-stamp:hover {
+  transform: translateY(-3px);
+  border-color: var(--berry-primary);
+  box-shadow: var(--shadow-soft);
+}
+
+.bedtime-stamp.collected {
+  border: 2px solid var(--berry-primary);
+  background: #fff0f3;
+  box-shadow: 0 4px 14px rgba(163, 64, 99, 0.18);
+  animation: stamp-pop 0.3s ease;
+}
+
+[data-theme='dream'] .bedtime-stamp.collected {
+  background: #2b1525;
+  border-color: #fb7185;
+  box-shadow: 0 4px 14px rgba(251, 113, 133, 0.2);
+}
+
+@keyframes stamp-pop {
+  0% { transform: scale(0.85) rotate(-6deg); }
+  60% { transform: scale(1.15) rotate(4deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+.stamp-emoji {
+  font-size: 2rem;
+}
+
+.stamp-label {
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-main);
+  text-align: center;
+}
+
+.stamp-badge {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 0.15rem 0.45rem;
+  border-radius: 9999px;
+  background: var(--border-light);
+  color: var(--text-muted);
+}
+
+.bedtime-stamp.collected .stamp-badge {
+  background: var(--berry-primary);
+  color: #ffffff;
+}
+
+.passport-complete-banner {
+  background: #ecfdf5;
+  border: 1.5px solid #10b981;
+  color: #065f46;
+  border-radius: 12px;
+  padding: 0.8rem 1.2rem;
+  text-align: center;
+  font-size: 0.92rem;
+  margin-top: 1rem;
+  animation: stamp-pop 0.3s ease;
+}
+
+[data-theme='dream'] .passport-complete-banner {
+  background: #064e3b;
+  border-color: #34d399;
+  color: #d1fae5;
+}
+
 /* Easter Egg Modal */
 .modal-overlay {
   position: fixed;
@@ -1208,6 +1316,150 @@ h1, h2, h3, h4, .font-serif {
   0% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
   100% { transform: translate(-50%, -80%) scale(0.2); opacity: 0; }
 }
+
+/* ==========================================================================
+   Invention 04: Playable Star Rattle Toy Styles
+   ========================================================================== */
+.star-rattle-toy {
+  display: inline-block;
+  transition: transform 0.15s ease;
+  filter: drop-shadow(0 6px 16px rgba(163, 64, 99, 0.25));
+  cursor: pointer;
+}
+
+.star-rattle-toy.shaking {
+  animation: rattle-wiggle 0.32s infinite ease-in-out;
+}
+
+@keyframes rattle-wiggle {
+  0% { transform: rotate(0deg) scale(1.08); }
+  25% { transform: rotate(-22deg) scale(1.2); }
+  50% { transform: rotate(18deg) scale(1.12); }
+  75% { transform: rotate(-14deg) scale(1.2); }
+  100% { transform: rotate(0deg) scale(1.08); }
+}
+
+.rattle-sparkles {
+  position: absolute;
+  pointer-events: none;
+  display: flex;
+  gap: 1.8rem;
+  top: 22%;
+}
+
+.rattle-sparkle-1,
+.rattle-sparkle-2,
+.rattle-sparkle-3 {
+  font-size: 1.5rem;
+  animation: rattle-sparkle-pop 0.6s infinite alternate ease-in-out;
+}
+
+.rattle-sparkle-2 {
+  animation-delay: 0.18s;
+}
+
+.rattle-sparkle-3 {
+  animation-delay: 0.36s;
+}
+
+@keyframes rattle-sparkle-pop {
+  0% { transform: scale(0.6) translateY(0); opacity: 0.4; }
+  100% { transform: scale(1.25) translateY(-16px); opacity: 1; }
+}
+
+/* ==========================================================================
+   Authentic Early-Web 88x31 Pixel Badges ( haX.baby Early-Web Soul 30% )
+   ========================================================================== */
+.early-web-badges {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1.6rem auto 0;
+  max-width: 680px;
+}
+
+.retro-88x31-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 110px;
+  height: 31px;
+  border: 2px solid;
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  box-shadow: 2px 2px 0px rgba(92, 64, 51, 0.35);
+  user-select: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  cursor: default;
+}
+
+.retro-88x31-badge:hover {
+  transform: translate(-1px, -2px);
+  box-shadow: 3px 4px 0px rgba(92, 64, 51, 0.45);
+}
+
+.badge-cream {
+  background: #fff8f1;
+  color: #5c4033;
+  border-color: #5c4033;
+}
+
+.badge-berry {
+  background: #a34063;
+  color: #fff8f1;
+  border-color: #5c4033;
+}
+
+.badge-gold {
+  background: #fef3c7;
+  color: #92400e;
+  border-color: #b45309;
+}
+
+.badge-mint {
+  background: #d1fae5;
+  color: #065f46;
+  border-color: #047857;
+}
+
+.badge-mini-icon {
+  font-size: 0.8rem;
+}
+
+/* ==========================================================================
+   Tier 2 Standout: Lantern Beam Cursor Spotlight
+   ========================================================================== */
+.lantern-beam-spotlight {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 998;
+  background: radial-gradient(
+    circle 240px at var(--beam-x, 50vw) var(--beam-y, 50vh),
+    rgba(253, 230, 138, 0.15) 0%,
+    rgba(245, 158, 11, 0.06) 45%,
+    transparent 75%
+  );
+  mix-blend-mode: screen;
+  transition: opacity 0.3s ease;
+}
+
+[data-theme='dream'] .lantern-beam-spotlight {
+  background: radial-gradient(
+    circle 260px at var(--beam-x, 50vw) var(--beam-y, 50vh),
+    rgba(253, 230, 138, 0.22) 0%,
+    rgba(245, 158, 11, 0.1) 45%,
+    transparent 80%
+  );
+}
+
 
 /* Responsive Media Queries */
 @media (max-width: 900px) {

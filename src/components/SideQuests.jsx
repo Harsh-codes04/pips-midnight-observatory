@@ -8,9 +8,26 @@ const INITIAL_NOTES = [
   { id: 3, author: 'A Cozy Dreamer', text: 'The Lullaby Lab melody cured my insomnia. Best baby on the web.' },
 ];
 
+const BEDTIME_STAMPS = [
+  { id: 'pip', emoji: '💤', name: 'Sleepy Pip', hint: 'The master dreamer', freq: 523.25 },
+  { id: 'lantern', emoji: '🏮', name: 'Dream Lantern', hint: 'Warm amber glow', freq: 659.25 },
+  { id: 'star', emoji: '⭐', name: 'Rooftop Star', hint: 'Guiding night light', freq: 783.99 },
+  { id: 'rattle', emoji: '🔔', name: 'Moon Rattle', hint: 'Gentle rhythm', freq: 1046.50 },
+];
+
 export default function SideQuests({ onChaosModeToggle, isChaosMode }) {
   // Odometer State
   const [visitorCount, setVisitorCount] = useState(1482);
+
+  // Bedtime Stamps State
+  const [collectedStamps, setCollectedStamps] = useState(() => {
+    try {
+      const saved = localStorage.getItem('pip_collected_stamps');
+      return saved ? JSON.parse(saved) : ['pip'];
+    } catch {
+      return ['pip'];
+    }
+  });
 
   // Guestbook State
   const [notes, setNotes] = useState(() => {
@@ -68,6 +85,25 @@ export default function SideQuests({ onChaosModeToggle, isChaosMode }) {
     }
   };
 
+  const handleToggleStamp = (stamp) => {
+    sound.playNote(stamp.freq);
+    const isCollected = collectedStamps.includes(stamp.id);
+    const updated = isCollected
+      ? collectedStamps.filter((id) => id !== stamp.id)
+      : [...collectedStamps, stamp.id];
+
+    setCollectedStamps(updated);
+    try {
+      localStorage.setItem('pip_collected_stamps', JSON.stringify(updated));
+    } catch {
+      // Ignore
+    }
+
+    if (!isCollected && updated.length === BEDTIME_STAMPS.length) {
+      sound.playNote(1046.5);
+    }
+  };
+
   const digits = visitorCount.toString().padStart(6, '0').split('');
 
   return (
@@ -80,7 +116,7 @@ export default function SideQuests({ onChaosModeToggle, isChaosMode }) {
           <h2 className="section-title">Pip's Little Toybox & Guestbook</h2>
           <p className="section-desc">
             Early-web whimsy with a gentle heart. Leave a note on Pip's dream board, check the vintage odometer,
-            or shake up the room!
+            or collect bedtime stamps!
           </p>
         </div>
 
@@ -197,6 +233,49 @@ export default function SideQuests({ onChaosModeToggle, isChaosMode }) {
               </button>
             </div>
           </div>
+        </div>
+
+        {/* Bedtime Stamp Passport (Early-Web Sticker Album Souvenir) */}
+        <div className="stamp-passport-card">
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem' }}>
+            <div>
+              <span className="project-tag">Nursery Souvenir</span>
+              <h3 style={{ fontSize: '1.3rem', margin: '0.35rem 0 0.2rem' }}>Pip's Bedtime Stamp Passport</h3>
+            </div>
+            <span className="font-mono text-xs" style={{ color: 'var(--berry-primary)', fontWeight: 600 }}>
+              {collectedStamps.length} of {BEDTIME_STAMPS.length} Stamps Collected
+            </span>
+          </div>
+
+          <p style={{ fontSize: '0.88rem', color: 'var(--text-muted)', margin: '0.4rem 0 1.2rem' }}>
+            Tap each bedtime seal to stamp your traveler passport before turning off the nightlight.
+          </p>
+
+          <div className="stamps-grid">
+            {BEDTIME_STAMPS.map((stamp) => {
+              const isCollected = collectedStamps.includes(stamp.id);
+              return (
+                <button
+                  key={stamp.id}
+                  type="button"
+                  className={`bedtime-stamp ${isCollected ? 'collected' : ''}`}
+                  onClick={() => handleToggleStamp(stamp)}
+                  aria-pressed={isCollected}
+                  title={`${stamp.name} - ${stamp.hint} (${isCollected ? 'Stamped · Tap to unstamp' : 'Tap to stamp'})`}
+                >
+                  <span className="stamp-emoji">{stamp.emoji}</span>
+                  <span className="stamp-label">{stamp.name}</span>
+                  <span className="stamp-badge">{isCollected ? 'STAMPED' : 'TAP ME'}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {collectedStamps.length === BEDTIME_STAMPS.length && (
+            <div className="passport-complete-banner">
+              ⭐ <strong>Certified Master Dreamer!</strong> Pip awards you the Midnight Nursery golden seal. Sleep tight, little stargazer.
+            </div>
+          )}
         </div>
       </div>
     </section>

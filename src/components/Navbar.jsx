@@ -1,8 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Sun, Moon, Volume2, VolumeX, Sparkles, Menu, X } from 'lucide-react';
+import { Sun, Moon, Volume2, VolumeX, Sparkles, Menu, X, Flashlight } from 'lucide-react';
 import { sound } from '../utils/audio';
 
-export default function Navbar({ theme, onToggleTheme, onTriggerConfetti, onSecretMoonEgg }) {
+export default function Navbar({
+  theme,
+  onToggleTheme,
+  onTriggerConfetti,
+  onSecretMoonEgg,
+  isLanternOn,
+  onToggleLantern,
+}) {
   const [isMuted, setIsMuted] = useState(sound.isMuted);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [moonClicks, setMoonClicks] = useState(0);
@@ -116,6 +123,20 @@ export default function Navbar({ theme, onToggleTheme, onTriggerConfetti, onSecr
             onClick={handleSoundToggle}
           >
             {isMuted ? <VolumeX size={17} /> : <Volume2 size={17} />}
+          </button>
+
+          {/* Lantern Beam Cursor Spotlight Toggle (Tier 2 Standout) */}
+          <button
+            type="button"
+            className={`icon-btn ${isLanternOn ? 'active' : ''}`}
+            title={isLanternOn ? 'Lantern Beam: Active (Click to dim)' : 'Lantern Beam: Off (Click for cursor lantern spotlight)'}
+            aria-label={isLanternOn ? 'Turn off lantern spotlight cursor' : 'Turn on lantern spotlight cursor'}
+            onClick={() => {
+              sound.playClick();
+              if (onToggleLantern) onToggleLantern();
+            }}
+          >
+            <Flashlight size={17} color={isLanternOn ? '#f59e0b' : 'currentColor'} />
           </button>
 
           {/* Day / Dream Toggle (with 3-click secret easter egg) */}

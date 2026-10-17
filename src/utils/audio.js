@@ -107,6 +107,29 @@ class SoundEngine {
     }
   }
 
+  async playRattle() {
+    if (this.isMuted) return;
+    await this.init();
+    if (!this.ctx) return;
+
+    try {
+      const now = this.ctx.currentTime || 0.001;
+      [0, 0.04, 0.08].forEach((offset, idx) => {
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(1300 + idx * 350, now + offset);
+        gain.gain.cancelScheduledValues(now + offset);
+        gain.gain.setValueAtTime(0.07, now + offset);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + offset + 0.035);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now + offset);
+        osc.stop(now + offset + 0.04);
+      });
+    } catch (e) {}
+  }
+
   // Generative lullaby sequence: "Twinkle Sleepy Stars"
   async playLullabyMelody(onNotePlayed, onFinished) {
     // Automatically unmute so the user actually hears the melody

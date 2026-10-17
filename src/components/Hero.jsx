@@ -79,11 +79,6 @@ export default function Hero({ onPipClick }) {
                 Read Bedtime Story
               </a>
             </div>
-
-            <div className="status-badge">
-              <span className="status-dot"></span>
-              <span>Currently on shift: Midnight Nursery Rooftop Desk</span>
-            </div>
           </div>
 
           {/* Right Column: Character Stage with Official Artwork */}

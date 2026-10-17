@@ -17,7 +17,23 @@ export default function Footer() {
           delivery routes. Sleep tight, little neighbor.
         </p>
 
-        <div style={{ marginTop: '1.5rem', fontSize: '0.8rem', color: 'var(--text-faint)' }}>
+        {/* Early-Web Nostalgic Badges */}
+        <div className="early-web-badges" aria-label="Early web nostalgic badges">
+          <span className="retro-88x31-badge badge-cream">
+            <span className="badge-mini-icon">💤</span> PIP-APPROVED
+          </span>
+          <span className="retro-88x31-badge badge-berry">
+            <span className="badge-mini-icon">⭐</span> NO NIGHTMARES
+          </span>
+          <span className="retro-88x31-badge badge-gold">
+            <span className="badge-mini-icon">🎵</span> LULLABY 1.0
+          </span>
+          <span className="retro-88x31-badge badge-mint">
+            <span className="badge-mini-icon">🌙</span> 800x600 COZY
+          </span>
+        </div>
+
+        <div style={{ marginTop: '1.2rem', fontSize: '0.8rem', color: 'var(--text-faint)' }}>
           Midnight Nursery · Crafted with <Heart size={12} fill="#a34063" color="#a34063" style={{ display: 'inline', margin: '0 2px' }} /> & peaceful dreams
         </div>
       </div>
