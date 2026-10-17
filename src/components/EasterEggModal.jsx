@@ -53,7 +53,7 @@ export default function EasterEggModal({ isOpen, onClose }) {
           🎉 You Found Pip's Secret Diary!
         </h3>
         <span className="kicker" style={{ marginBottom: '1.2rem' }}>
-          Easter Egg Discovered
+          ✨ Hidden Secret Unlocked!
         </span>
 
         <div

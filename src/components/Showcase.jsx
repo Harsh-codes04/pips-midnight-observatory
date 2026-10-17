@@ -108,7 +108,7 @@ export default function Showcase() {
              ================================================================= */}
           <div className="project-card">
             <div>
-              <span className="project-tag">Project 01 · Generative Audio</span>
+              <span className="project-tag">Invention 01 · Celestial Music Box</span>
               <h3 className="project-name">The Lullaby Lab</h3>
               <p className="project-summary">
                 A wind-up music box running on synthetic celestial waves. Built to replace sudden loud sounds
@@ -180,7 +180,7 @@ export default function Showcase() {
              ================================================================= */}
           <div className="project-card">
             <div>
-              <span className="project-tag">Project 02 · Bedside Lighting</span>
+              <span className="project-tag">Invention 02 · Bedside Moon Lantern</span>
               <h3 className="project-name">Nightlight Collection</h3>
               <p className="project-summary">
                 Handcrafted crescent moon lamps with gentle porcelain diffusion. Emits zero blue light to
@@ -255,7 +255,7 @@ export default function Showcase() {
              ================================================================= */}
           <div className="project-card">
             <div>
-              <span className="project-tag">Project 03 · Logistics & Radar</span>
+              <span className="project-tag">Invention 03 · Rooftop Radar & Route</span>
               <h3 className="project-name">Dream Delivery Routes</h3>
               <p className="project-summary">
                 Pip's live flight navigation grid. Pinpoints gentle chimney downdrafts and cloud currents

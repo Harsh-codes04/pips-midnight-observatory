@@ -75,12 +75,12 @@ export default function SideQuests({ onChaosModeToggle, isChaosMode }) {
       <div className="wrap">
         <div className="section-header">
           <div className="kicker">
-            <Sparkles size={14} /> Side Quests & Community
+            <Sparkles size={14} /> Interactive Toybox & Community
           </div>
-          <h2 className="section-title">Pip's Early-Web Playground</h2>
+          <h2 className="section-title">Pip's Little Toybox & Guestbook</h2>
           <p className="section-desc">
-            Early-web whimsy with modern craft. Leave a note on Pip's dream board, check the vintage odometer,
-            or trigger chaos mode!
+            Early-web whimsy with a gentle heart. Leave a note on Pip's dream board, check the vintage odometer,
+            or shake up the room!
           </p>
         </div>
 
@@ -88,13 +88,13 @@ export default function SideQuests({ onChaosModeToggle, isChaosMode }) {
           {/* Left Column: Vintage Hit Counter & Chaos Mode */}
           <div className="quest-card">
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <span className="project-tag">Side Quest · Odometer</span>
-              <span className="font-mono text-xs" style={{ color: '#10b981' }}>+1 pt Bonus</span>
+              <span className="project-tag">Vintage Counter</span>
+              <span className="font-mono text-xs" style={{ color: '#10b981' }}>Live Odometer</span>
             </div>
 
             <h3 style={{ fontSize: '1.4rem', margin: '0.6rem 0 0.4rem' }}>Dreams Delivered</h3>
             <p style={{ fontSize: '0.88rem', color: 'var(--text-muted)' }}>
-              An authentic early-web visitor ticker tracking dream deliveries in your browser session.
+              A classic retro-web visitor odometer tracking gentle dreams delivered in your browser.
             </p>
 
             <div className="odometer-box">
@@ -110,18 +110,18 @@ export default function SideQuests({ onChaosModeToggle, isChaosMode }) {
               </div>
             </div>
 
-            {/* Responsive Chaos Mode Button (+5 pts) */}
+            {/* Responsive Chaos Mode Button */}
             <div style={{ marginTop: '1.8rem', paddingTop: '1.4rem', borderTop: '1px dashed var(--border-light)' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
                 <span className="font-mono text-xs" style={{ color: 'var(--berry-primary)', fontWeight: 600 }}>
                   <Flame size={13} style={{ display: 'inline', marginRight: '4px' }} />
-                  Chaos Mode (+5 pts)
+                  Playful Chaos Mode
                 </span>
-                <span className="font-mono text-xs" style={{ color: 'var(--text-faint)' }}>Retro 90s Personality</span>
+                <span className="font-mono text-xs" style={{ color: 'var(--text-faint)' }}>Retro 90s Shake</span>
               </div>
               <p style={{ fontSize: '0.86rem', color: 'var(--text-muted)', marginBottom: '0.8rem' }}>
                 {isChaosMode
-                  ? 'Chaos unleashed! Playful early-web personality reshapes the view.'
+                  ? 'Chaos unleashed! A gentle retro rumble reshapes the nursery view.'
                   : 'Press to shake up the nursery with a playful retro earthquake vibration.'}
               </p>
               <button
@@ -138,11 +138,11 @@ export default function SideQuests({ onChaosModeToggle, isChaosMode }) {
             </div>
           </div>
 
-          {/* Right Column: Live Guestbook Wall (+2 pts) */}
+          {/* Right Column: Live Guestbook Wall */}
           <div className="quest-card">
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <span className="project-tag">Side Quest · Community Wall</span>
-              <span className="font-mono text-xs" style={{ color: '#10b981' }}>+2 pts Bonus</span>
+              <span className="project-tag">Community Wall</span>
+              <span className="font-mono text-xs" style={{ color: '#10b981' }}>Visitor Board</span>
             </div>
 
             <h3 style={{ fontSize: '1.4rem', margin: '0.6rem 0 0.4rem' }}>Pip's Dream Board</h3>

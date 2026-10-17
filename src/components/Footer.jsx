@@ -24,7 +24,7 @@ export default function Footer() {
         </div>
 
         <div style={{ marginTop: '1.5rem', fontSize: '0.8rem', color: 'var(--text-faint)' }}>
-          Track 1 Canon Entry · All official artwork by haX.baby · Made with <Heart size={12} fill="#a34063" color="#a34063" style={{ display: 'inline', margin: '0 2px' }} /> & early-web curiosity
+          Built for Pip the Skull Baby · Character artwork courtesy of haX.baby · Crafted with <Heart size={12} fill="#a34063" color="#a34063" style={{ display: 'inline', margin: '0 2px' }} /> & early-web soul
         </div>
       </div>
     </footer>

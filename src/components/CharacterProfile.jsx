@@ -18,11 +18,11 @@ export default function CharacterProfile() {
       <div className="wrap">
         <div className="section-header">
           <div className="kicker">
-            <User size={14} /> Official Character Dossier · Track 1 Canon
+            <User size={14} /> Midnight Nursery Staff Registry
           </div>
-          <h2 className="section-title">Pip's Builder Profile</h2>
+          <h2 className="section-title">Pip's Character Profile</h2>
           <p className="section-desc">
-            Get to know Midnight Nursery's gentlest engineer. Faithful to the official haX canon: 100% cozy, friendly, and sweet.
+            Get to know Midnight Nursery's gentlest engineer — friendly, sleepy, and always ready to tuck you into bed.
           </p>
         </div>
 
@@ -84,7 +84,7 @@ export default function CharacterProfile() {
                 }}
                 style={{ width: '100%' }}
               >
-                <FileText size={15} /> View Official Concept Sketch (haX Archive)
+                <FileText size={15} /> View Original Studio Sketch
               </button>
             </div>
           </div>
@@ -126,13 +126,13 @@ export default function CharacterProfile() {
               </p>
             </div>
 
-            {/* Canon Rules Reminder */}
+            {/* In-Universe Bedtime Promise */}
             <div className="canon-guarantee">
               <span className="font-mono text-xs" style={{ color: 'var(--berry-primary)', fontWeight: 600 }}>
-                ★ Midnight Nursery Safety Guarantee
+                ★ Pip's Gentle Dream Promise
               </span>
               <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>
-                Under nursery law, Pip never brings gore, jump-scares, or eerie tricks. A skull baby represents eternal friendship and quiet rest!
+                Every dream Pip crafts is warm, comforting, and safe. A skull baby represents sweet smiles, cozy rest, and quiet peaceful slumbers!
               </p>
             </div>
           </div>
@@ -150,10 +150,10 @@ export default function CharacterProfile() {
         >
           <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '440px' }}>
             <h3 id="sketch-title" style={{ fontSize: '1.4rem', marginBottom: '0.5rem' }}>
-              Pip's Official Reference Sketch
+              Pip's Original Studio Sketch
             </h3>
             <p className="font-mono text-xs" style={{ color: 'var(--text-muted)', marginBottom: '1rem' }}>
-              haX.baby Canon Reference (pip.jpg)
+              Midnight Nursery Studio Archive
             </p>
 
             <div style={{ background: '#fff', padding: '0.5rem', borderRadius: '16px', border: '1.5px solid var(--border-light)' }}>
