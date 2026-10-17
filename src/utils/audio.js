@@ -8,7 +8,7 @@ class SoundEngine {
     this.listeners = new Set();
   }
 
-  init() {
+  async init() {
     if (!this.ctx && typeof window !== 'undefined') {
       const AudioContextClass = window.AudioContext || window.webkitAudioContext;
       if (AudioContextClass) {
@@ -16,7 +16,11 @@ class SoundEngine {
       }
     }
     if (this.ctx && this.ctx.state === 'suspended') {
-      this.ctx.resume();
+      try {
+        await this.ctx.resume();
+      } catch (err) {
+        // Handled silently
+      }
     }
   }
 
@@ -33,80 +37,92 @@ class SoundEngine {
     this.isMuted = !this.isMuted;
     this.notify();
     if (!this.isMuted) {
-      this.playNote(523.25); // Play chime feedback
+      this.playNote(523.25); // Play pleasant feedback chime
     }
     return this.isMuted;
   }
 
-  playNote(frequency = 523.25, duration = 1.2) {
+  unmute() {
+    if (this.isMuted) {
+      this.isMuted = false;
+      this.notify();
+    }
+  }
+
+  async playNote(frequency = 523.25, duration = 1.2) {
     if (this.isMuted) return;
-    this.init();
+    await this.init();
     if (!this.ctx) return;
 
     try {
+      const now = this.ctx.currentTime || 0.001;
       const osc = this.ctx.createOscillator();
       const gain = this.ctx.createGain();
 
-      // Sine wave with soft harmonic overtone
+      // Sine wave with warm celestial tone
       osc.type = 'sine';
-      osc.frequency.setValueAtTime(frequency, this.ctx.currentTime);
+      osc.frequency.setValueAtTime(frequency, now);
 
-      // Warm music box envelope
-      gain.gain.setValueAtTime(0.0001, this.ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.25, this.ctx.currentTime + 0.03);
-      gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + duration);
+      // Safe linear attack + smooth exponential release
+      gain.gain.cancelScheduledValues(now);
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.linearRampToValueAtTime(0.28, now + 0.03);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
 
       osc.connect(gain);
       gain.connect(this.ctx.destination);
 
-      osc.start();
-      osc.stop(this.ctx.currentTime + duration);
-    } catch {
-      // Audio context might need user gesture
+      osc.start(now);
+      osc.stop(now + duration);
+    } catch (e) {
+      // Audio context safety fallback
     }
   }
 
-  playClick() {
+  async playClick() {
     if (this.isMuted) return;
-    this.init();
+    await this.init();
     if (!this.ctx) return;
 
     try {
+      const now = this.ctx.currentTime || 0.001;
       const osc = this.ctx.createOscillator();
       const gain = this.ctx.createGain();
 
       osc.type = 'triangle';
-      osc.frequency.setValueAtTime(800, this.ctx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(300, this.ctx.currentTime + 0.05);
+      osc.frequency.setValueAtTime(800, now);
+      osc.frequency.exponentialRampToValueAtTime(280, now + 0.05);
 
-      gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.05);
+      gain.gain.cancelScheduledValues(now);
+      gain.gain.setValueAtTime(0.06, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.05);
 
       osc.connect(gain);
       gain.connect(this.ctx.destination);
 
-      osc.start();
-      osc.stop(this.ctx.currentTime + 0.06);
-    } catch {
-      // Ignore
+      osc.start(now);
+      osc.stop(now + 0.06);
+    } catch (e) {
+      // Safety fallback
     }
   }
 
-  // Generative lullaby sequence: "Twinkle / Sleepy Stars"
-  playLullabyMelody(onNotePlayed) {
-    if (this.isMuted) return;
-    this.init();
+  // Generative lullaby sequence: "Twinkle Sleepy Stars"
+  async playLullabyMelody(onNotePlayed, onFinished) {
+    // Automatically unmute so the user actually hears the melody
+    this.unmute();
+    await this.init();
 
     // Pentatonic scale notes
     const melody = [
       { freq: 523.25, label: 'C5', delay: 0 },
-      { freq: 587.33, label: 'D5', delay: 350 },
-      { freq: 659.25, label: 'E5', delay: 700 },
-      { freq: 783.99, label: 'G5', delay: 1050 },
-      { freq: 880.00, label: 'A5', delay: 1400 },
-      { freq: 1046.50, label: 'C6', delay: 1750 },
-      { freq: 880.00, label: 'A5', delay: 2200 },
-      { freq: 659.25, label: 'E5', delay: 2600 }
+      { freq: 587.33, label: 'D5', delay: 380 },
+      { freq: 659.25, label: 'E5', delay: 760 },
+      { freq: 783.99, label: 'G5', delay: 1140 },
+      { freq: 880.00, label: 'A5', delay: 1520 },
+      { freq: 1046.50, label: 'C6', delay: 1900 },
+      { freq: 880.00, label: 'A5', delay: 2350 },
+      { freq: 659.25, label: 'E5', delay: 2800 },
     ];
 
     melody.forEach((step) => {
@@ -117,6 +133,12 @@ class SoundEngine {
         }
       }, step.delay);
     });
+
+    if (onFinished) {
+      setTimeout(() => {
+        onFinished();
+      }, 3400);
+    }
   }
 }
 

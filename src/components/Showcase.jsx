@@ -43,6 +43,7 @@ export default function Showcase() {
   const [flightStatusMsg, setFlightStatusMsg] = useState('Waiting on launchpad at Midnight Nursery');
 
   const handlePlayKey = (key) => {
+    sound.unmute();
     setActiveNote(key.note);
     setWindingDegrees((prev) => prev + 45);
     sound.playNote(key.freq);
@@ -51,13 +52,19 @@ export default function Showcase() {
 
   const handlePlayLullaby = () => {
     if (isPlayingMelody) return;
+    sound.unmute();
     setIsPlayingMelody(true);
-    setWindingDegrees((prev) => prev + 360);
-    sound.playLullabyMelody((note) => {
-      setActiveNote(note);
-      setTimeout(() => setActiveNote(null), 250);
-    });
-    setTimeout(() => setIsPlayingMelody(false), 3000);
+    setWindingDegrees((prev) => prev + 720);
+    sound.playLullabyMelody(
+      (note) => {
+        setActiveNote(note);
+        setTimeout(() => setActiveNote(null), 250);
+      },
+      () => {
+        setIsPlayingMelody(false);
+        setActiveNote(null);
+      }
+    );
   };
 
   // Dispatch interactive delivery flight
@@ -123,12 +130,21 @@ export default function Showcase() {
                 className="project-preview-img"
               />
 
+              {/* Musical Note Floating Feedback */}
+              {(isPlayingMelody || activeNote) && (
+                <div className="floating-music-notes" aria-hidden="true">
+                  <span className="music-note-float note-1">🎵</span>
+                  <span className="music-note-float note-2">✨</span>
+                  <span className="music-note-float note-3">🎶</span>
+                </div>
+              )}
+
               {/* Animated Brass Winding Key Visual */}
               <div
                 className="winding-key-badge"
                 style={{
                   transform: `rotate(${windingDegrees}deg)`,
-                  transition: isPlayingMelody ? 'transform 3s linear' : 'transform 0.3s ease',
+                  transition: isPlayingMelody ? 'transform 3.4s linear' : 'transform 0.3s ease',
                 }}
                 title="Brass Winding Key"
               >
