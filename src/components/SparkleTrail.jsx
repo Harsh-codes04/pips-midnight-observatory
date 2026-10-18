@@ -4,33 +4,49 @@ const SPARKLE_CHARS = ['✦', '★', '⋆', '•', '✧'];
 
 export default function SparkleTrail() {
   const [sparkles, setSparkles] = useState([]);
-  const [reducedMotion, setReducedMotion] = useState(false);
+  const [disabled, setDisabled] = useState(false);
 
   useEffect(() => {
-    // Check user preference for reduced motion
+    // 1. Respect user preference for reduced motion
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setReducedMotion(mediaQuery.matches);
+    const isTouchDevice =
+      typeof window !== 'undefined' &&
+      ('ontouchstart' in window || navigator.maxTouchPoints > 0);
 
-    const handleChange = (e) => setReducedMotion(e.matches);
+    if (mediaQuery.matches || isTouchDevice) {
+      setDisabled(true);
+      return;
+    }
+
+    const handleMotionChange = (e) => {
+      setDisabled(e.matches || isTouchDevice);
+    };
+
     if (mediaQuery.addEventListener) {
-      mediaQuery.addEventListener('change', handleChange);
+      mediaQuery.addEventListener('change', handleMotionChange);
     }
 
     return () => {
       if (mediaQuery.removeEventListener) {
-        mediaQuery.removeEventListener('change', handleChange);
+        mediaQuery.removeEventListener('change', handleMotionChange);
       }
     };
   }, []);
 
   useEffect(() => {
-    if (reducedMotion) return;
+    if (disabled) return;
 
     let counter = 0;
+    let lastTime = 0;
 
     const handlePointerMove = (e) => {
-      // Throttle density
-      if (Math.random() > 0.45) return;
+      const now = performance.now();
+      // Throttle: emit at most one sparkle every 45ms to protect frame rate
+      if (now - lastTime < 45) return;
+      lastTime = now;
+
+      // 40% chance per throttled step for gentle, restrained density
+      if (Math.random() > 0.4) return;
 
       const newSparkle = {
         id: counter++,
@@ -39,21 +55,22 @@ export default function SparkleTrail() {
         char: SPARKLE_CHARS[Math.floor(Math.random() * SPARKLE_CHARS.length)],
       };
 
-      setSparkles((prev) => [...prev.slice(-12), newSparkle]);
+      // Cap at 10 active particles max
+      setSparkles((prev) => [...prev.slice(-9), newSparkle]);
 
       setTimeout(() => {
         setSparkles((prev) => prev.filter((s) => s.id !== newSparkle.id));
-      }, 700);
+      }, 650);
     };
 
-    window.addEventListener('mousemove', handlePointerMove);
+    window.addEventListener('mousemove', handlePointerMove, { passive: true });
     return () => window.removeEventListener('mousemove', handlePointerMove);
-  }, [reducedMotion]);
+  }, [disabled]);
 
-  if (reducedMotion) return null;
+  if (disabled) return null;
 
   return (
-    <div aria-hidden="true" style={{ pointerEvents: 'none' }}>
+    <div aria-hidden="true" style={{ pointerEvents: 'none', position: 'fixed', inset: 0, zIndex: 9999 }}>
       {sparkles.map((s) => (
         <span
           key={s.id}

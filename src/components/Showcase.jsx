@@ -1,5 +1,17 @@
-import React, { useState } from 'react';
-import { Music, Lightbulb, MapPin, Play, Sparkles, Navigation, Send, CheckCircle } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import {
+  Play,
+  Pause,
+  Square,
+  Volume2,
+  VolumeX,
+  RotateCcw,
+  Sparkles,
+  Navigation,
+  Send,
+  CheckCircle,
+  Moon,
+} from 'lucide-react';
 import { sound } from '../utils/audio';
 
 const PENTATONIC_KEYS = [
@@ -18,31 +30,159 @@ const LANTERN_THEMES = [
   { name: 'Stardust Mint', color: '#10b981', shadow: 'rgba(16, 185, 129, 0.55)' },
 ];
 
+const DEFAULT_LANTERN = LANTERN_THEMES[0];
+const DEFAULT_GLOW = 70;
+
 const ROUTE_STOPS = [
-  { id: 'nursery', name: 'Midnight Nursery Hub', time: '22:00', cargo: 'Fresh Dream Bubbles', x: 20, y: 110 },
-  { id: 'chimneys', name: 'Chimney Lane East', time: '23:30', cargo: 'Warm Hearth Lullabies', x: 120, y: 70 },
-  { id: 'clocktower', name: 'Old Village Clocktower', time: '01:15', cargo: 'Silenced Pendulum Oil', x: 210, y: 50 },
-  { id: 'moon', name: 'Moonbeam Pier', time: '03:45', cargo: 'Final Sweet Slumbers', x: 280, y: 90 },
+  {
+    id: 'nursery',
+    name: 'Midnight Nursery Hub',
+    time: '22:00',
+    cargo: 'Fresh Dream Bubbles',
+    x: 25,
+    y: 105,
+    desc: 'The central rooftop launchpad where Pip gathers newly spun night-clouds and bedtime drafts.',
+  },
+  {
+    id: 'moonberry',
+    name: 'Moonberry Cottage',
+    time: '23:30',
+    cargo: 'Warm Hearth Lullabies',
+    x: 100,
+    y: 55,
+    desc: 'A cozy thatched cottage where berry lullabies soothe drowsy field mice into sound sleep.',
+  },
+  {
+    id: 'cloudcastle',
+    name: 'Cloud Castle',
+    time: '01:15',
+    cargo: 'Star-woven Pillows',
+    x: 195,
+    y: 35,
+    desc: 'Floating fluffy parapets high in the stratosphere where young dreamers dream of flight.',
+  },
+  {
+    id: 'starvillage',
+    name: 'Sleepy Star Village',
+    time: '03:45',
+    cargo: 'Final Sweet Slumbers',
+    x: 275,
+    y: 90,
+    desc: 'A quiet cobblestone hamlet where starlight blankets tuck little creatures gently into bed.',
+  },
 ];
 
 export default function Showcase() {
-  // Lullaby Lab State
+  // =========================================================================
+  // Feature 1: Interactive Lullaby Music Box State
+  // =========================================================================
   const [activeNote, setActiveNote] = useState(null);
-  const [isPlayingMelody, setIsPlayingMelody] = useState(false);
-  const [windingDegrees, setWindingDegrees] = useState(0);
+  const [playbackState, setPlaybackState] = useState(sound.lullabyState); // 'stopped' | 'playing' | 'paused'
+  const [musicBoxVolume, setMusicBoxVolume] = useState(sound.volume);
+  const [isAudioMuted, setIsAudioMuted] = useState(sound.isMuted);
 
-  // Nightlight State
-  const [selectedLantern, setSelectedLantern] = useState(LANTERN_THEMES[0]);
-  const [glowIntensity, setGlowIntensity] = useState(75);
-  const [lanternMode, setLanternMode] = useState('porcelain'); // 'porcelain' | 'starlight'
+  useEffect(() => {
+    return sound.subscribe((muted, vol) => {
+      setIsAudioMuted(muted);
+      setMusicBoxVolume(vol);
+    });
+  }, []);
 
-  // Route Map State
+  const handlePlayLullaby = async () => {
+    await sound.playLullaby(
+      (note) => {
+        setActiveNote(note);
+        setTimeout(() => setActiveNote(null), 250);
+      },
+      (state) => {
+        setPlaybackState(state);
+      }
+    );
+  };
+
+  const handlePauseLullaby = () => {
+    sound.playClick();
+    sound.pauseLullaby();
+    setPlaybackState('paused');
+    setActiveNote(null);
+  };
+
+  const handleStopLullaby = () => {
+    sound.playClick();
+    sound.stopLullaby();
+    setPlaybackState('stopped');
+    setActiveNote(null);
+  };
+
+  const handleVolumeChange = (e) => {
+    const newVol = parseFloat(e.target.value);
+    setMusicBoxVolume(newVol);
+    sound.setVolume(newVol);
+  };
+
+  const handlePlayKey = (key) => {
+    sound.unmute();
+    setActiveNote(key.note);
+    sound.playNote(key.freq);
+    setTimeout(() => setActiveNote(null), 300);
+  };
+
+  // =========================================================================
+  // Feature 2: Dream Delivery Route State
+  // =========================================================================
   const [activeStop, setActiveStop] = useState(ROUTE_STOPS[0]);
   const [isDelivering, setIsDelivering] = useState(false);
-  const [deliveryProgress, setDeliveryProgress] = useState(0);
-  const [flightStatusMsg, setFlightStatusMsg] = useState('Waiting on launchpad at Midnight Nursery');
+  const [parcelCoords, setParcelCoords] = useState({ x: 25, y: 105 });
+  const [flightStatusMsg, setFlightStatusMsg] = useState('Standing by on the launchpad at Midnight Nursery');
 
-  // Star Rattle Toy State
+  const handleLaunchDelivery = () => {
+    if (isDelivering) return;
+    setIsDelivering(true);
+    sound.unmute();
+    sound.playNote(523.25);
+    setFlightStatusMsg('Departing Nursery Hub with star cargo...');
+    setParcelCoords({ x: ROUTE_STOPS[0].x, y: ROUTE_STOPS[0].y });
+
+    ROUTE_STOPS.forEach((stop, idx) => {
+      setTimeout(() => {
+        setActiveStop(stop);
+        setParcelCoords({ x: stop.x, y: stop.y });
+        setFlightStatusMsg(`Reached ${stop.name} · ${stop.cargo} delivered!`);
+        sound.playNote(523.25 + idx * 130);
+
+        if (idx === ROUTE_STOPS.length - 1) {
+          setTimeout(() => {
+            setIsDelivering(false);
+            setFlightStatusMsg('All bedtime routes complete! Neighborhood safely asleep.');
+          }, 1200);
+        }
+      }, (idx + 1) * 1200);
+    });
+  };
+
+  const handleSelectStop = (stop) => {
+    sound.playClick();
+    setActiveStop(stop);
+    setParcelCoords({ x: stop.x, y: stop.y });
+    sound.playNote(stop.id === 'starvillage' ? 1046.5 : 783.99);
+    setFlightStatusMsg(`Inspecting ${stop.name} · Scheduled at ${stop.time}`);
+  };
+
+  // =========================================================================
+  // Feature 3: Interactive Nightlight Workshop State
+  // =========================================================================
+  const [selectedLantern, setSelectedLantern] = useState(DEFAULT_LANTERN);
+  const [glowIntensity, setGlowIntensity] = useState(DEFAULT_GLOW);
+
+  const handleResetNightlight = () => {
+    sound.playClick();
+    setSelectedLantern(DEFAULT_LANTERN);
+    setGlowIntensity(DEFAULT_GLOW);
+  };
+
+  // =========================================================================
+  // Feature 4: Playable Star Rattle Toy State
+  // =========================================================================
   const [rattleCount, setRattleCount] = useState(0);
   const [isRattling, setIsRattling] = useState(false);
 
@@ -52,59 +192,6 @@ export default function Showcase() {
     setRattleCount((prev) => prev + 1);
     setIsRattling(true);
     setTimeout(() => setIsRattling(false), 350);
-  };
-
-  const handlePlayKey = (key) => {
-    sound.unmute();
-    setActiveNote(key.note);
-    setWindingDegrees((prev) => prev + 45);
-    sound.playNote(key.freq);
-    setTimeout(() => setActiveNote(null), 300);
-  };
-
-  const handlePlayLullaby = () => {
-    if (isPlayingMelody) return;
-    sound.unmute();
-    setIsPlayingMelody(true);
-    setWindingDegrees((prev) => prev + 720);
-    sound.playLullabyMelody(
-      (note) => {
-        setActiveNote(note);
-        setTimeout(() => setActiveNote(null), 250);
-      },
-      () => {
-        setIsPlayingMelody(false);
-        setActiveNote(null);
-      }
-    );
-  };
-
-  // Dispatch interactive delivery flight
-  const handleLaunchDelivery = () => {
-    if (isDelivering) return;
-    setIsDelivering(true);
-    setDeliveryProgress(0);
-    sound.playNote(523.25);
-    setFlightStatusMsg('Departing Nursery Hub with dream cargo...');
-
-    const steps = [
-      { prog: 25, stop: ROUTE_STOPS[1], msg: 'Drifting over Chimney Lane East · Lullabies deployed!' },
-      { prog: 65, stop: ROUTE_STOPS[2], msg: 'Clocktower reached · Pendulum calmed with hush oil' },
-      { prog: 100, stop: ROUTE_STOPS[3], msg: 'Moonbeam Pier arrival · All neighborhood dreams delivered!' },
-    ];
-
-    steps.forEach((step, idx) => {
-      setTimeout(() => {
-        setDeliveryProgress(step.prog);
-        setActiveStop(step.stop);
-        setFlightStatusMsg(step.msg);
-        sound.playNote(659.25 + idx * 130);
-      }, (idx + 1) * 1100);
-    });
-
-    setTimeout(() => {
-      setIsDelivering(false);
-    }, 4200);
   };
 
   return (
@@ -117,33 +204,47 @@ export default function Showcase() {
           <h2 className="section-title">Pip's Showcase Inventions</h2>
           <p className="section-desc">
             Everything Pip invents at Midnight Nursery is tuned for maximum calm, safety, and cozy sleep.
-            Test the playable prototypes below!
+            Explore and play with the working prototypes below!
           </p>
         </div>
 
         <div className="projects-grid">
           {/* =================================================================
-              Showcase Project 1: The Lullaby Lab
+              Showcase Project 1: The Lullaby Lab (Feature 1)
              ================================================================= */}
           <div className="project-card">
             <div>
               <span className="project-tag">Invention 01 · Celestial Music Box</span>
               <h3 className="project-name">The Lullaby Lab</h3>
               <p className="project-summary">
-                A wind-up music box running on synthetic celestial waves. Built to replace sudden loud sounds
-                with hypnotic pentatonic harmonies.
+                A handcrafted wind-up music box running on synthetic celestial waves. Built to replace sudden
+                loud sounds with soothing Swiss chime harmonies.
               </p>
             </div>
 
+            {/* Music Box Exhibit Stage with Rotating Disc */}
             <div className="project-img-frame">
               <img
                 src="/assets/pip_lullaby_box.png"
-                alt="Pip's Lullaby Music Box with winding key"
+                alt="Pip's Lullaby Music Box"
                 className="project-preview-img"
               />
 
-              {/* Musical Note Floating Feedback */}
-              {(isPlayingMelody || activeNote) && (
+              {/* Rotating Musical Disc Visual (Tier 2 requirement) */}
+              <div
+                className={`music-disc-overlay ${playbackState === 'playing' ? 'spinning' : playbackState === 'paused' ? 'paused' : ''}`}
+                aria-hidden="true"
+                title="Rotating Celestial Music Disc"
+              >
+                <div className="disc-groove groove-1" />
+                <div className="disc-groove groove-2" />
+                <div className="disc-center">
+                  <span className="disc-star">★</span>
+                </div>
+              </div>
+
+              {/* Floating Music Notes Feedback */}
+              {(playbackState === 'playing' || activeNote) && (
                 <div className="floating-music-notes" aria-hidden="true">
                   <span className="music-note-float note-1">🎵</span>
                   <span className="music-note-float note-2">✨</span>
@@ -152,24 +253,84 @@ export default function Showcase() {
               )}
             </div>
 
+            {/* Interactive Music Box Controls */}
             <div className="project-interactive-box">
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              {/* Playback Status Bar */}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.6rem' }}>
                 <span className="font-mono text-xs" style={{ color: 'var(--text-muted)' }}>
-                  Interactive Chime Keys:
+                  Status:{' '}
+                  <strong style={{ color: playbackState === 'playing' ? '#10b981' : playbackState === 'paused' ? '#f59e0b' : 'var(--text-main)' }}>
+                    {playbackState === 'playing' ? `Playing (${activeNote || 'Melody'})` : playbackState === 'paused' ? 'Paused' : 'Ready'}
+                  </strong>
                 </span>
+
+                {/* Primary Music Box Controls: Play / Pause / Stop */}
+                <div style={{ display: 'flex', gap: '0.35rem' }}>
+                  {playbackState !== 'playing' ? (
+                    <button
+                      type="button"
+                      className="btn btn-primary btn-pill"
+                      style={{ fontSize: '0.74rem', padding: '0.3rem 0.65rem' }}
+                      onClick={handlePlayLullaby}
+                      aria-label="Play lullaby melody"
+                    >
+                      <Play size={12} fill="currentColor" /> Play
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      className="btn btn-secondary btn-pill"
+                      style={{ fontSize: '0.74rem', padding: '0.3rem 0.65rem' }}
+                      onClick={handlePauseLullaby}
+                      aria-label="Pause lullaby melody"
+                    >
+                      <Pause size={12} fill="currentColor" /> Pause
+                    </button>
+                  )}
+
+                  <button
+                    type="button"
+                    className="btn btn-secondary btn-pill"
+                    style={{ fontSize: '0.74rem', padding: '0.3rem 0.65rem' }}
+                    onClick={handleStopLullaby}
+                    disabled={playbackState === 'stopped'}
+                    aria-label="Stop lullaby melody"
+                  >
+                    <Square size={12} fill="currentColor" /> Stop
+                  </button>
+                </div>
+              </div>
+
+              {/* Volume Slider & Mute Toggle */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', padding: '0.4rem 0.6rem', background: 'var(--bg-card)', borderRadius: '10px', border: '1px solid var(--border-light)', marginBottom: '0.75rem' }}>
                 <button
                   type="button"
-                  className="btn btn-primary btn-pill"
-                  onClick={handlePlayLullaby}
-                  disabled={isPlayingMelody}
-                  aria-label="Wind music box and play sleepy lullaby melody"
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', color: 'var(--text-muted)' }}
+                  onClick={() => sound.toggleMute()}
+                  aria-label={isAudioMuted ? 'Unmute music box volume' : 'Mute music box volume'}
+                  title={isAudioMuted ? 'Unmute' : 'Mute'}
                 >
-                  <Play size={13} fill="currentColor" />
-                  <span>{isPlayingMelody ? 'Playing Lullaby...' : 'Wind & Play Lullaby'}</span>
+                  {isAudioMuted ? <VolumeX size={15} color="#ef4444" /> : <Volume2 size={15} color="var(--berry-primary)" />}
                 </button>
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.05"
+                  value={isAudioMuted ? 0 : musicBoxVolume}
+                  onChange={handleVolumeChange}
+                  style={{ flex: 1, accentColor: 'var(--berry-primary)', cursor: 'pointer', height: '4px' }}
+                  aria-label="Music box master volume"
+                />
+                <span className="font-mono text-xs" style={{ color: 'var(--text-faint)', minWidth: '32px', textAlign: 'right' }}>
+                  {isAudioMuted ? '0%' : `${Math.round(musicBoxVolume * 100)}%`}
+                </span>
               </div>
 
               {/* 6 Clickable Chime Keys */}
+              <span className="font-mono text-xs" style={{ color: 'var(--text-muted)' }}>
+                Pentatonic Chime Keys:
+              </span>
               <div className="synth-keys-grid">
                 {PENTATONIC_KEYS.map((key) => (
                   <button
@@ -185,19 +346,16 @@ export default function Showcase() {
                   </button>
                 ))}
               </div>
-              <p className="font-mono text-xs" style={{ textAlign: 'center', color: 'var(--text-faint)' }}>
-                {activeNote ? `Playing note: ${activeNote}` : 'Tap any key or play melody'}
-              </p>
             </div>
           </div>
 
           {/* =================================================================
-              Showcase Project 2: Nightlight Collection
+              Showcase Project 2: Nightlight Workshop (Feature 3)
              ================================================================= */}
           <div className="project-card">
             <div>
               <span className="project-tag">Invention 02 · Bedside Moon Lantern</span>
-              <h3 className="project-name">Nightlight Collection</h3>
+              <h3 className="project-name">Nightlight Workshop</h3>
               <p className="project-summary">
                 Handcrafted crescent moon lamps with gentle porcelain diffusion. Emits zero blue light to
                 protect young dreamers' eyes.
@@ -242,68 +400,130 @@ export default function Showcase() {
                   setGlowIntensity(Number(e.target.value));
                   sound.playClick();
                 }}
-                style={{ width: '100%', accentColor: selectedLantern.color, cursor: 'pointer' }}
+                style={{ width: '100%', accentColor: selectedLantern.color, cursor: 'pointer', marginBottom: '0.8rem' }}
                 aria-label="Nightlight glow brightness"
               />
 
-              {/* 4 Color Palette Swatches */}
-              <div className="lantern-controls">
-                {LANTERN_THEMES.map((theme) => (
-                  <button
-                    key={theme.name}
-                    type="button"
-                    className={`lantern-orb-btn ${selectedLantern.name === theme.name ? 'selected' : ''}`}
-                    style={{ backgroundColor: theme.color }}
-                    onClick={() => {
-                      setSelectedLantern(theme);
-                      sound.playNote(659.25);
-                    }}
-                    title={theme.name}
-                    aria-label={`Select ${theme.name} aura`}
-                  />
-                ))}
+              {/* 4 Color Palette Swatches + Reset Button */}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div className="lantern-controls" style={{ margin: 0 }}>
+                  {LANTERN_THEMES.map((theme) => (
+                    <button
+                      key={theme.name}
+                      type="button"
+                      className={`lantern-orb-btn ${selectedLantern.name === theme.name ? 'selected' : ''}`}
+                      style={{ backgroundColor: theme.color }}
+                      onClick={() => {
+                        setSelectedLantern(theme);
+                        sound.playNote(659.25);
+                      }}
+                      title={theme.name}
+                      aria-label={`Select ${theme.name} aura`}
+                    />
+                  ))}
+                </div>
+
+                {/* Reset Button (Tier 2 requirement) */}
+                <button
+                  type="button"
+                  className="btn btn-secondary btn-pill"
+                  style={{ fontSize: '0.74rem', padding: '0.28rem 0.65rem' }}
+                  onClick={handleResetNightlight}
+                  title="Reset lantern glow to default Moon Amber 70%"
+                  aria-label="Reset nightlight settings to default"
+                >
+                  <RotateCcw size={11} /> Reset
+                </button>
               </div>
             </div>
           </div>
 
           {/* =================================================================
-              Showcase Project 3: Dream Delivery Routes
+              Showcase Project 3: Dream Delivery Routes (Feature 2)
              ================================================================= */}
           <div className="project-card">
             <div>
               <span className="project-tag">Invention 03 · Rooftop Radar & Route</span>
               <h3 className="project-name">Dream Delivery Routes</h3>
               <p className="project-summary">
-                Pip's live flight navigation grid. Pinpoints gentle chimney downdrafts and cloud currents
-                for silent doorstep slumber delivery.
+                Pip's live flight navigation grid. Follows gentle chimney downdrafts and cloud currents
+                for silent doorstep slumber delivery across the village.
               </p>
             </div>
 
-            <div className="delivery-canvas">
-              {/* Animated Flight Path SVG */}
-              <svg width="100%" height="100%" viewBox="0 0 300 140" style={{ position: 'absolute', inset: 0 }}>
+            {/* Interactive SVG Radar Map */}
+            <div className="delivery-canvas" style={{ position: 'relative' }}>
+              <svg
+                width="100%"
+                height="100%"
+                viewBox="0 0 300 140"
+                style={{ position: 'absolute', inset: 0 }}
+                aria-label="Interactive Midnight Nursery flight map"
+              >
+                {/* Background Stars in Map */}
+                <circle cx="50" cy="20" r="1" fill="#fbbf24" opacity="0.6" />
+                <circle cx="150" cy="85" r="1.5" fill="#ffffff" opacity="0.7" />
+                <circle cx="230" cy="18" r="1.2" fill="#fbbf24" opacity="0.8" />
+                <circle cx="85" cy="120" r="1" fill="#ffffff" opacity="0.5" />
+
+                {/* Connecting Curved Flight Path */}
                 <path
-                  d="M 20 110 Q 70 30, 120 70 T 210 50 T 280 90"
+                  id="flight-route-path"
+                  d="M 25 105 Q 60 40, 100 55 T 195 35 T 275 90"
                   fill="none"
-                  stroke="rgba(251, 191, 36, 0.4)"
-                  strokeWidth="2"
+                  stroke="rgba(251, 191, 36, 0.45)"
+                  strokeWidth="2.5"
                   className="map-svg-path"
                 />
-                {/* Waypoint Markers */}
+
+                {/* Animated Flying Dream Parcel / Glowing Star */}
+                <g
+                  style={{
+                    transform: `translate(${parcelCoords.x}px, ${parcelCoords.y}px)`,
+                    transition: 'transform 0.9s cubic-bezier(0.25, 1, 0.5, 1)',
+                  }}
+                  className="animated-parcel-group"
+                >
+                  <circle r="9" fill="rgba(251, 191, 36, 0.25)" className="parcel-aura-pulse" />
+                  <circle r="4.5" fill="#f59e0b" stroke="#ffffff" strokeWidth="1.5" />
+                  <text y="-7" textAnchor="middle" fontSize="9" fill="#fef3c7">📦</text>
+                </g>
+
+                {/* Waypoint Clickable Destination Nodes */}
                 {ROUTE_STOPS.map((st) => (
-                  <circle
+                  <g
                     key={st.id}
-                    cx={st.x}
-                    cy={st.y}
-                    r={activeStop.id === st.id ? 7 : 5}
-                    fill={activeStop.id === st.id ? '#fbbf24' : '#a34063'}
-                    stroke="#ffffff"
-                    strokeWidth={activeStop.id === st.id ? 2 : 1}
-                  />
+                    onClick={() => handleSelectStop(st)}
+                    style={{ cursor: 'pointer' }}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`Select destination ${st.name}`}
+                  >
+                    <circle
+                      cx={st.x}
+                      cy={st.y}
+                      r={activeStop.id === st.id ? 8 : 5.5}
+                      fill={activeStop.id === st.id ? '#fbbf24' : '#a34063'}
+                      stroke="#ffffff"
+                      strokeWidth={activeStop.id === st.id ? 2.5 : 1}
+                      style={{ transition: 'all 0.25s ease' }}
+                    />
+                    <text
+                      x={st.x}
+                      y={st.y + (st.y > 70 ? -12 : 16)}
+                      textAnchor="middle"
+                      fill="#e2e8f0"
+                      fontSize="7.5"
+                      fontFamily="sans-serif"
+                      fontWeight="600"
+                    >
+                      {st.name.split(' ')[0]}
+                    </text>
+                  </g>
                 ))}
               </svg>
 
-              <div style={{ position: 'absolute', bottom: '8px', left: '12px', right: '12px', display: 'flex', justifyContent: 'space-between' }}>
+              <div style={{ position: 'absolute', bottom: '8px', left: '12px', right: '12px', display: 'flex', justifyContent: 'space-between', zIndex: 2 }}>
                 <span className="font-mono text-xs" style={{ color: '#fbbf24' }}>
                   ★ {isDelivering ? 'Dispatching...' : 'Radar Online'}
                 </span>
@@ -313,11 +533,12 @@ export default function Showcase() {
               </div>
             </div>
 
+            {/* Waypoints Selector & Status */}
             <div className="project-interactive-box">
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.6rem' }}>
                 <span className="font-mono text-xs" style={{ color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '4px' }}>
                   <Navigation size={13} style={{ color: 'var(--berry-primary)' }} />
-                  Waypoints:
+                  Destinations:
                 </span>
                 <button
                   type="button"
@@ -331,6 +552,7 @@ export default function Showcase() {
                 </button>
               </div>
 
+              {/* Destination Pill Buttons */}
               <div style={{ display: 'flex', gap: '0.35rem', overflowX: 'auto', paddingBottom: '0.4rem' }}>
                 {ROUTE_STOPS.map((stop) => (
                   <button
@@ -338,23 +560,24 @@ export default function Showcase() {
                     type="button"
                     className={`btn btn-pill ${activeStop.id === stop.id ? 'btn-primary' : 'btn-secondary'}`}
                     style={{ whiteSpace: 'nowrap', fontSize: '0.74rem', padding: '0.3rem 0.6rem' }}
-                    onClick={() => {
-                      setActiveStop(stop);
-                      sound.playNote(stop.id === 'moon' ? 1046.5 : 783.99);
-                    }}
+                    onClick={() => handleSelectStop(stop)}
                   >
                     {stop.time} · {stop.name.split(' ')[0]}
                   </button>
                 ))}
               </div>
 
+              {/* Selected Destination Details Box */}
               <div style={{ marginTop: '0.6rem', padding: '0.6rem 0.8rem', background: 'var(--bg-card)', borderRadius: '10px', border: '1px solid var(--border-light)' }}>
                 <div style={{ fontSize: '0.85rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}>
                   <CheckCircle size={13} color="#10b981" />
-                  {activeStop.name}
+                  {activeStop.name} ({activeStop.time})
                 </div>
-                <div className="font-mono text-xs" style={{ color: 'var(--text-muted)', marginTop: '0.2rem' }}>
-                  Status: {flightStatusMsg}
+                <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '0.2rem', lineHeight: '1.4' }}>
+                  {activeStop.desc}
+                </div>
+                <div className="font-mono text-xs" style={{ color: 'var(--berry-primary)', marginTop: '0.3rem' }}>
+                  Cargo: {activeStop.cargo}
                 </div>
               </div>
             </div>

@@ -1457,6 +1457,146 @@ h1, h2, h3, h4, .font-serif {
   );
 }
 
+/* ==========================================================================
+   Tier 2 Feature 1: Rotating Music Disc Visual
+   ========================================================================== */
+.music-disc-overlay {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: #1e1329;
+  border: 2px solid #d97706;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 5;
+  transition: transform 0.3s ease;
+}
+
+.music-disc-overlay.spinning {
+  animation: disc-spin 3.2s linear infinite;
+}
+
+.music-disc-overlay.paused {
+  animation: disc-spin 3.2s linear infinite;
+  animation-play-state: paused;
+}
+
+@keyframes disc-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.disc-groove {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px dashed rgba(251, 191, 36, 0.35);
+}
+
+.groove-1 {
+  width: 42px;
+  height: 42px;
+}
+
+.groove-2 {
+  width: 28px;
+  height: 28px;
+}
+
+.disc-center {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #d97706;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid #fff;
+}
+
+.disc-star {
+  font-size: 8px;
+  color: #fff;
+  line-height: 1;
+}
+
+/* ==========================================================================
+   Tier 2 Feature 2: Animated SVG Dream Delivery Parcel Pulse
+   ========================================================================== */
+.parcel-aura-pulse {
+  animation: parcel-pulse 1.8s ease-in-out infinite alternate;
+}
+
+@keyframes parcel-pulse {
+  0% { transform: scale(0.9); opacity: 0.35; }
+  100% { transform: scale(1.4); opacity: 0.85; }
+}
+
+/* ==========================================================================
+   Tier 2 Feature 4: Storybook Page Transition Effect
+   ========================================================================== */
+.story-page-content {
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.story-page-content.page-turning {
+  opacity: 0.2;
+  transform: translateX(8px) scale(0.99);
+}
+
+/* ==========================================================================
+   Tier 3 Feature A: Pip Character Speech Bubble & Hop Reaction
+   ========================================================================== */
+.pip-speech-bubble {
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-card);
+  color: var(--text-main);
+  border: 1.5px solid var(--berry-primary);
+  border-radius: 18px;
+  padding: 0.55rem 1rem;
+  font-size: 0.84rem;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 8px 24px rgba(163, 64, 99, 0.22);
+  z-index: 20;
+  pointer-events: none;
+  animation: bubble-pop-in 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.pip-speech-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -7px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 7px 7px 0 7px;
+  border-style: solid;
+  border-color: var(--berry-primary) transparent transparent transparent;
+}
+
+@keyframes bubble-pop-in {
+  0% { opacity: 0; transform: translateX(-50%) translateY(8px) scale(0.85); }
+  100% { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+}
+
+.pip-hopping {
+  animation: pip-hop 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes pip-hop {
+  0% { transform: scale(1) translateY(0); }
+  45% { transform: scale(1.08) translateY(-14px); }
+  100% { transform: scale(1) translateY(0); }
+}
+
 
 /* Responsive Media Queries */
 @media (max-width: 900px) {
@@ -1548,5 +1688,14 @@ h1, h2, h3, h4, .font-serif {
   }
   .starburst-container {
     display: none !important;
+  }
+  .music-disc-overlay.spinning {
+    animation: none !important;
+  }
+  .parcel-aura-pulse {
+    animation: none !important;
+  }
+  .pip-hopping {
+    animation: none !important;
   }
 }

@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Send, Heart, Sparkles, Flame, RotateCcw } from 'lucide-react';
+import { Send, Heart, Sparkles, Flame, RotateCcw, Trash2, ShieldCheck, Check } from 'lucide-react';
 import { sound } from '../utils/audio';
 
+const PRESET_WISHES = [
+  "🌙 Soft dreams to every sleeping creature",
+  "⭐ May tomorrow bring quiet, gentle moments",
+  "🏮 A warm amber nightlight for anxious hearts",
+  "💤 Rest well, Pip's stars are on duty tonight",
+];
+
 const INITIAL_NOTES = [
-  { id: 1, author: 'Luna the Stargazer', text: 'Thank you for the warm amber nightlight, Pip! Slept like a sleepy kitten.' },
-  { id: 2, author: 'Barnaby the Owl', text: 'Chimney delivery was silent and on time. 10/10 dream engineering.' },
-  { id: 3, author: 'A Cozy Dreamer', text: 'The Lullaby Lab melody cured my insomnia. Best baby on the web.' },
+  { id: 1, author: 'Luna the Stargazer', text: 'Thank you for the warm amber nightlight, Pip! Slept like a sleepy kitten.', isCustom: false },
+  { id: 2, author: 'Barnaby the Owl', text: 'Chimney delivery was silent and on time. 10/10 dream engineering.', isCustom: false },
+  { id: 3, author: 'A Cozy Dreamer', text: 'The Lullaby Lab melody cured my insomnia. Best baby on the web.', isCustom: false },
 ];
 
 const BEDTIME_STAMPS = [
@@ -16,7 +23,7 @@ const BEDTIME_STAMPS = [
 ];
 
 export default function SideQuests({ onChaosModeToggle, isChaosMode }) {
-  // Odometer State
+  // Vintage Odometer State
   const [visitorCount, setVisitorCount] = useState(1482);
 
   // Bedtime Stamps State
@@ -29,7 +36,7 @@ export default function SideQuests({ onChaosModeToggle, isChaosMode }) {
     }
   });
 
-  // Guestbook State
+  // Visitor Memory Wishes State (Tier 3 Feature B)
   const [notes, setNotes] = useState(() => {
     try {
       const saved = localStorage.getItem('pip_guestbook_notes');
@@ -53,7 +60,7 @@ export default function SideQuests({ onChaosModeToggle, isChaosMode }) {
   }, []);
 
   const handleAddNote = (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     if (!textInput.trim()) return;
 
     sound.playNote(783.99);
@@ -61,6 +68,7 @@ export default function SideQuests({ onChaosModeToggle, isChaosMode }) {
       id: Date.now(),
       author: authorInput.trim() || 'A Sleepy Traveler',
       text: textInput.trim(),
+      isCustom: true,
     };
 
     const updated = [newNote, ...notes];
@@ -73,6 +81,22 @@ export default function SideQuests({ onChaosModeToggle, isChaosMode }) {
 
     setTextInput('');
     setAuthorInput('');
+  };
+
+  const handleQuickWish = (wishText) => {
+    sound.playClick();
+    setTextInput(wishText);
+  };
+
+  const handleDeleteNote = (noteId) => {
+    sound.playClick();
+    const updated = notes.filter((n) => n.id !== noteId);
+    setNotes(updated);
+    try {
+      localStorage.setItem('pip_guestbook_notes', JSON.stringify(updated));
+    } catch {
+      // Ignore
+    }
   };
 
   const handleResetNotes = () => {
@@ -107,16 +131,16 @@ export default function SideQuests({ onChaosModeToggle, isChaosMode }) {
   const digits = visitorCount.toString().padStart(6, '0').split('');
 
   return (
-    <section id="sidequests" className="section">
+    <section id="sidequests" className="section" aria-label="Interactive toybox, visitor memory wall, and stamps">
       <div className="wrap">
         <div className="section-header">
           <div className="kicker">
-            <Sparkles size={14} /> Interactive Toybox & Community
+            <Sparkles size={14} /> Interactive Toybox & Visitor Memory
           </div>
-          <h2 className="section-title">Pip's Little Toybox & Guestbook</h2>
+          <h2 className="section-title">Pip's Little Toybox & Wish Wall</h2>
           <p className="section-desc">
-            Early-web whimsy with a gentle heart. Leave a note on Pip's dream board, check the vintage odometer,
-            or collect bedtime stamps!
+            Early-web whimsy with a gentle heart. Leave a quiet bedtime wish for Pip, check the vintage demo odometer,
+            or collect bedtime stamps in your passport!
           </p>
         </div>
 
@@ -125,12 +149,12 @@ export default function SideQuests({ onChaosModeToggle, isChaosMode }) {
           <div className="quest-card">
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <span className="project-tag">Vintage Counter</span>
-              <span className="font-mono text-xs" style={{ color: '#10b981' }}>Live Odometer</span>
+              <span className="font-mono text-xs" style={{ color: '#10b981' }}>Demo Odometer</span>
             </div>
 
             <h3 style={{ fontSize: '1.4rem', margin: '0.6rem 0 0.4rem' }}>Dreams Delivered</h3>
             <p style={{ fontSize: '0.88rem', color: 'var(--text-muted)' }}>
-              A classic retro-web visitor odometer tracking gentle dreams delivered in your browser.
+              A classic retro-web visitor odometer. Stored locally in your browser to celebrate every cozy visit!
             </p>
 
             <div className="odometer-box">
@@ -143,6 +167,9 @@ export default function SideQuests({ onChaosModeToggle, isChaosMode }) {
                     {digit}
                   </span>
                 ))}
+              </div>
+              <div style={{ fontSize: '0.72rem', color: '#6ee7b7', marginTop: '0.4rem', opacity: 0.8 }}>
+                Simulated browser demo odometer
               </div>
             </div>
 
@@ -174,32 +201,59 @@ export default function SideQuests({ onChaosModeToggle, isChaosMode }) {
             </div>
           </div>
 
-          {/* Right Column: Live Guestbook Wall */}
+          {/* Right Column: Visitor Memory Wall (Tier 3 Feature B) */}
           <div className="quest-card">
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <span className="project-tag">Community Wall</span>
-              <span className="font-mono text-xs" style={{ color: '#10b981' }}>Visitor Board</span>
+              <span className="project-tag">Visitor Memory Wall</span>
+              <span className="font-mono text-xs" style={{ color: '#10b981' }}>Local Memory</span>
             </div>
 
-            <h3 style={{ fontSize: '1.4rem', margin: '0.6rem 0 0.4rem' }}>Pip's Dream Board</h3>
-            <p style={{ fontSize: '0.88rem', color: 'var(--text-muted)', marginBottom: '1.2rem' }}>
-              Leave a bedtime wish or gentle hello for Pip. Notes are stored locally in your browser.
+            <h3 style={{ fontSize: '1.4rem', margin: '0.6rem 0 0.4rem' }}>Pip's Bedtime Wish Wall</h3>
+            <p style={{ fontSize: '0.88rem', color: 'var(--text-muted)', marginBottom: '0.8rem' }}>
+              Pick or write a gentle bedtime wish for Pip. Saved in your browser's local memory.
             </p>
 
+            {/* Privacy & Local Storage Transparency Banner */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', background: 'var(--bg-card-subtle)', border: '1px solid var(--border-light)', borderRadius: '10px', padding: '0.4rem 0.65rem', marginBottom: '0.8rem', fontSize: '0.74rem', color: 'var(--text-muted)' }}>
+              <ShieldCheck size={14} color="#10b981" />
+              <span>Private & Local: Stored strictly in your browser. No personal data collected.</span>
+            </div>
+
+            {/* Quick Preset Wish Buttons */}
+            <div style={{ marginBottom: '0.8rem' }}>
+              <span className="font-mono text-xs" style={{ color: 'var(--text-faint)', display: 'block', marginBottom: '0.35rem' }}>
+                Quick bedtime wishes:
+              </span>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem' }}>
+                {PRESET_WISHES.map((pw, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => handleQuickWish(pw)}
+                    className="btn btn-secondary btn-pill"
+                    style={{ fontSize: '0.73rem', padding: '0.22rem 0.55rem', whiteSpace: 'nowrap' }}
+                  >
+                    {pw}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Wish Submission Form */}
             <form onSubmit={handleAddNote} className="guestbook-form">
               <input
                 type="text"
-                placeholder="Your name / alias"
+                placeholder="Alias (optional)"
                 value={authorInput}
                 onChange={(e) => setAuthorInput(e.target.value)}
                 className="guestbook-input"
-                style={{ flex: '0.4' }}
-                maxLength={25}
+                style={{ flex: '0.35' }}
+                maxLength={20}
                 aria-label="Your nickname or alias"
               />
               <input
                 type="text"
-                placeholder="Leave a sweet bedtime dream wish..."
+                placeholder="Choose a wish above or type one..."
                 value={textInput}
                 onChange={(e) => setTextInput(e.target.value)}
                 className="guestbook-input"
@@ -207,16 +261,29 @@ export default function SideQuests({ onChaosModeToggle, isChaosMode }) {
                 required
                 aria-label="Bedtime dream wish message"
               />
-              <button type="submit" className="btn btn-primary btn-pill" title="Post note" aria-label="Post bedtime note">
+              <button type="submit" className="btn btn-primary btn-pill" title="Save dream wish" aria-label="Save bedtime wish">
                 <Send size={15} />
               </button>
             </form>
 
-            <div className="notes-scroll-wall">
+            {/* Wish Wall Stream */}
+            <div className="notes-scroll-wall" aria-label="Bedtime wishes list">
               {notes.map((note) => (
-                <div key={note.id} className="note-bubble">
-                  <div className="note-author">✦ {note.author}</div>
-                  <div>{note.text}</div>
+                <div key={note.id} className="note-bubble" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                  <div>
+                    <div className="note-author">✦ {note.author}</div>
+                    <div style={{ fontSize: '0.86rem', color: 'var(--text-main)', marginTop: '0.15rem' }}>{note.text}</div>
+                  </div>
+                  {/* Delete Option for saved wishes (Tier 3 requirement) */}
+                  <button
+                    type="button"
+                    onClick={() => handleDeleteNote(note.id)}
+                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-faint)', padding: '2px', marginLeft: '6px' }}
+                    title="Remove this wish from browser"
+                    aria-label={`Remove wish by ${note.author}`}
+                  >
+                    <Trash2 size={13} />
+                  </button>
                 </div>
               ))}
             </div>
@@ -229,7 +296,7 @@ export default function SideQuests({ onChaosModeToggle, isChaosMode }) {
                 style={{ fontSize: '0.74rem', padding: '0.25rem 0.6rem' }}
                 title="Reset dream board to default notes"
               >
-                <RotateCcw size={11} /> Reset Board
+                <RotateCcw size={11} /> Reset Defaults
               </button>
             </div>
           </div>
