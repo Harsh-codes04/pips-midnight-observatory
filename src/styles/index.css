@@ -329,7 +329,20 @@ h1, h2, h3, h4, .font-serif {
   font-size: 1.15rem;
   color: var(--text-muted);
   max-width: 520px;
+  margin-bottom: 1.4rem;
+}
+
+.hero-tagline-quote {
+  display: inline-block;
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  color: var(--berry-primary);
+  background: var(--berry-soft);
+  border: 1px solid var(--berry-border);
+  padding: 0.35rem 0.95rem;
+  border-radius: 9999px;
   margin-bottom: 1.8rem;
+  box-shadow: 0 2px 8px rgba(163, 64, 99, 0.08);
 }
 
 .hero-actions {

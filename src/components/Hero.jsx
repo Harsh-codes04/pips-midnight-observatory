@@ -112,6 +112,11 @@ export default function Hero({ onPipClick }) {
               neighborhood softly into bed.
             </p>
 
+            {/* Official Concept Tagline */}
+            <div className="hero-tagline-quote">
+              ✨ <em>"Small baby. Enormous dreams."</em>
+            </div>
+
             <div className="hero-actions">
               <a
                 href="#projects"
