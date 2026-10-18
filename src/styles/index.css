@@ -1678,6 +1678,210 @@ h1, h2, h3, h4, .font-serif {
   }
 }
 
+/* ==========================================================================
+   Tier 3: Dream Weaver Lab & Web Speech Voice Narration
+   ========================================================================== */
+
+.dreamweaver-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+@media (max-width: 860px) {
+  .dreamweaver-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.dreamweaver-controls-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: 20px;
+  padding: 1.8rem;
+  box-shadow: var(--shadow-card);
+}
+
+.dreamweaver-result-card {
+  background: var(--bg-card-subtle);
+  border: 1px solid var(--border-light);
+  border-radius: 20px;
+  padding: 1.8rem;
+  box-shadow: var(--shadow-soft);
+  min-height: 380px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.ingredient-group {
+  margin-bottom: 1.3rem;
+}
+
+.ingredient-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 0.6rem;
+  color: var(--text-main);
+}
+
+.ingredient-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 0.6rem;
+}
+
+.ingredient-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 0.8rem;
+  background: var(--bg-card-subtle);
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-main);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  text-align: left;
+}
+
+.ingredient-chip:hover {
+  transform: translateY(-2px);
+  border-color: var(--berry-primary);
+  background: var(--berry-soft);
+}
+
+.ingredient-chip.active {
+  background: var(--berry-primary);
+  color: #ffffff;
+  border-color: var(--berry-primary);
+  box-shadow: 0 4px 12px rgba(163, 64, 99, 0.25);
+  transform: translateY(-2px);
+}
+
+.ingredient-chip.active span:last-child {
+  color: #ffffff;
+}
+
+/* Dream Certificate Styling */
+.dream-certificate {
+  background: var(--bg-card);
+  border: 2px dashed var(--berry-border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  position: relative;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.dream-cert-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--berry-soft);
+  color: var(--berry-primary);
+  padding: 0.25rem 0.65rem;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  margin-bottom: 0.8rem;
+}
+
+.dream-cert-title {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  color: var(--text-main);
+  margin-bottom: 0.8rem;
+  line-height: 1.3;
+}
+
+.dream-cert-icons {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px dotted var(--border-light);
+}
+
+.cert-separator {
+  font-size: 0.8rem;
+  color: var(--berry-primary);
+}
+
+.dream-cert-story {
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--text-main);
+  margin-bottom: 1.2rem;
+  background: var(--bg-card-subtle);
+  padding: 0.9rem;
+  border-radius: 10px;
+}
+
+.dream-cert-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--border-light);
+}
+
+.dream-empty-state {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.recent-dream-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.45rem 0.65rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.recent-dream-row:hover {
+  background: var(--berry-soft);
+  border-color: var(--berry-primary);
+  transform: translateX(3px);
+}
+
+/* Voice Narration Text Glowing State */
+.story-text-narrating {
+  background: linear-gradient(90deg, var(--berry-primary), var(--gold-glow), var(--berry-primary));
+  background-size: 200% auto;
+  color: transparent !important;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: shine-narrate 3s linear infinite;
+  text-shadow: 0 0 12px rgba(232, 140, 31, 0.2);
+}
+
+@keyframes shine-narrate {
+  to {
+    background-position: 200% center;
+  }
+}
+
 /* Prefers Reduced Motion Media Query */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -1710,5 +1914,9 @@ h1, h2, h3, h4, .font-serif {
   }
   .pip-hopping {
     animation: none !important;
+  }
+  .story-text-narrating {
+    animation: none !important;
+    color: var(--text-main) !important;
   }
 }

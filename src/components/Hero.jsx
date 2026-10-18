@@ -18,6 +18,8 @@ export default function Hero({ onPipClick }) {
   const [whisperIdx, setWhisperIdx] = useState(0);
   const [isHopping, setIsHopping] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [cozyMeter, setCozyMeter] = useState(20); // 0 to 100%
+  const [isSleeping, setIsSleeping] = useState(false);
 
   useEffect(() => {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -76,17 +78,31 @@ export default function Hero({ onPipClick }) {
 
   const handleCharacterInteraction = () => {
     sound.unmute();
-    sound.playNote(783.99);
 
-    // Trigger hop animation
-    setIsHopping(true);
-    setTimeout(() => setIsHopping(false), 450);
+    // Increment Cozy meter by 20%
+    const nextCozy = Math.min(100, cozyMeter + 20);
+    setCozyMeter(nextCozy);
 
-    // Show friendly speech bubble whisper
-    const msg = PIP_WHISPERS[whisperIdx % PIP_WHISPERS.length];
-    setWhisperIdx((prev) => prev + 1);
-    setActiveWhisper(msg);
-    setTimeout(() => setActiveWhisper(null), 3000);
+    if (nextCozy >= 100) {
+      setIsSleeping(true);
+      sound.playNote(523.25, 1.5);
+      setActiveWhisper("Zzz... Pip has fallen into deep cozy slumber! 🌙✨");
+      setTimeout(() => {
+        setIsSleeping(false);
+        setCozyMeter(20);
+      }, 7000);
+    } else {
+      sound.playNote(783.99 + nextCozy * 2);
+      // Trigger hop animation
+      setIsHopping(true);
+      setTimeout(() => setIsHopping(false), 450);
+
+      // Show friendly speech bubble whisper
+      const msg = PIP_WHISPERS[whisperIdx % PIP_WHISPERS.length];
+      setWhisperIdx((prev) => prev + 1);
+      setActiveWhisper(msg);
+      setTimeout(() => setActiveWhisper(null), 3000);
+    }
 
     if (onPipClick) onPipClick();
   };
@@ -115,6 +131,45 @@ export default function Hero({ onPipClick }) {
             {/* Official Concept Tagline */}
             <div className="hero-tagline-quote">
               ✨ <em>"Small baby. Enormous dreams."</em>
+            </div>
+
+            {/* Tier 3: Interactive Cozy Comfort Meter */}
+            <div className="cozy-meter-container" style={{ margin: '1.4rem 0', maxWidth: '380px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.4rem' }}>
+                <span className="font-mono text-xs" style={{ display: 'flex', alignItems: 'center', gap: '5px', color: 'var(--text-main)', fontWeight: 600 }}>
+                  <Heart size={13} color="var(--berry-primary)" />
+                  Pip's Cozy Meter:
+                </span>
+                <span className="font-mono text-xs" style={{ color: isSleeping ? '#10b981' : 'var(--berry-primary)', fontWeight: 700 }}>
+                  {isSleeping ? '😴 Deep Slumber (100%)' : `${cozyMeter}% Cozy`}
+                </span>
+              </div>
+              <div
+                className="cozy-progress-track"
+                style={{
+                  height: '9px',
+                  background: 'var(--border-light)',
+                  borderRadius: '10px',
+                  overflow: 'hidden',
+                  position: 'relative',
+                }}
+              >
+                <div
+                  className="cozy-progress-fill"
+                  style={{
+                    width: `${cozyMeter}%`,
+                    height: '100%',
+                    background: isSleeping
+                      ? 'linear-gradient(90deg, #10b981, #34d399)'
+                      : 'linear-gradient(90deg, #f59e0b, #a34063)',
+                    borderRadius: '10px',
+                    transition: 'width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                  }}
+                />
+              </div>
+              <div className="font-mono text-xs" style={{ color: 'var(--text-muted)', marginTop: '0.3rem', fontSize: '0.72rem' }}>
+                {isSleeping ? 'Pip is snoozing peacefully. Sweet dreams! ☁️' : 'Tip: Click or tap Pip to tuck him into bed!'}
+              </div>
             </div>
 
             <div className="hero-actions">
@@ -154,7 +209,7 @@ export default function Hero({ onPipClick }) {
               }}
             >
               <Sparkles size={14} color="#e88c1f" />
-              <span>100% Cozy · 0% Creepy</span>
+              <span>{isSleeping ? '😴 Snoozing Soundly' : '100% Cozy · 0% Creepy'}</span>
             </div>
 
             <div
@@ -164,7 +219,7 @@ export default function Hero({ onPipClick }) {
               }}
             >
               <Heart size={14} color="#a34063" />
-              <span>Tap Pip for sleepy whispers</span>
+              <span>{isSleeping ? 'Zzz... Delta Wave Sleep' : 'Tap Pip to tuck into bed'}</span>
             </div>
 
             {/* Interactive Speech Bubble Reaction */}

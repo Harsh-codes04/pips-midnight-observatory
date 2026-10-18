@@ -86,6 +86,11 @@ export default function Navbar({
               </a>
             </li>
             <li>
+              <a href="#dreamweaver" className="nav-link" onClick={() => sound.playClick()}>
+                Dream Weaver
+              </a>
+            </li>
+            <li>
               <a href="#story" className="nav-link" onClick={() => sound.playClick()}>
                 Bedtime Story
               </a>
@@ -184,6 +189,11 @@ export default function Navbar({
             <li>
               <a href="#projects" className="mobile-nav-link" onClick={closeMobileMenu}>
                 ✦ Showcase Projects
+              </a>
+            </li>
+            <li>
+              <a href="#dreamweaver" className="mobile-nav-link" onClick={closeMobileMenu}>
+                ✦ Dream Weaver Lab
               </a>
             </li>
             <li>

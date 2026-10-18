@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BookOpen, ChevronLeft, ChevronRight, RotateCcw } from 'lucide-react';
+import { BookOpen, ChevronLeft, ChevronRight, RotateCcw, Volume2, VolumeX, Mic } from 'lucide-react';
 import { sound } from '../utils/audio';
 
 const STORY_SCENES = [
@@ -29,11 +29,60 @@ const STORY_SCENES = [
 export default function StoryScroll() {
   const [currentScene, setCurrentScene] = useState(0);
   const [isFlipping, setIsFlipping] = useState(false);
+  const [isNarrating, setIsNarrating] = useState(false);
+  const [hasSpeechSupport, setHasSpeechSupport] = useState(false);
 
   const scene = STORY_SCENES[currentScene];
 
+  useEffect(() => {
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      setHasSpeechSupport(true);
+    }
+    return () => {
+      if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+    };
+  }, []);
+
+  const stopNarration = () => {
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+    }
+    setIsNarrating(false);
+  };
+
+  const handleToggleNarrate = () => {
+    if (!hasSpeechSupport) return;
+    sound.playClick();
+
+    if (isNarrating) {
+      stopNarration();
+    } else {
+      stopNarration();
+      const utterance = new SpeechSynthesisUtterance(scene.text);
+      utterance.rate = 0.82; // Gentle, sleepy pace
+      utterance.pitch = 1.12; // Warm, youthful bedtime tone
+
+      // Pick an English voice if available
+      const voices = window.speechSynthesis.getVoices();
+      const preferred = voices.find(
+        (v) => v.lang.startsWith('en') && (v.name.includes('Natural') || v.name.includes('Female') || v.name.includes('Google') || v.name.includes('Samantha'))
+      ) || voices.find((v) => v.lang.startsWith('en'));
+
+      if (preferred) utterance.voice = preferred;
+
+      utterance.onend = () => setIsNarrating(false);
+      utterance.onerror = () => setIsNarrating(false);
+
+      window.speechSynthesis.speak(utterance);
+      setIsNarrating(true);
+    }
+  };
+
   const changeScene = (nextIndex) => {
     sound.playClick();
+    stopNarration();
     setIsFlipping(true);
     setCurrentScene(nextIndex);
     setTimeout(() => setIsFlipping(false), 300);
@@ -76,12 +125,12 @@ export default function StoryScroll() {
       <div className="wrap">
         <div className="section-header">
           <div className="kicker">
-            <BookOpen size={14} /> Origin Chronicles
+            <BookOpen size={14} /> Origin Chronicles · Tier 3 Voice Enabled
           </div>
           <h2 className="section-title">Pip's Bedtime Story</h2>
           <p className="section-desc">
             How a sleepy skull baby became the chief dreamer of Midnight Nursery.
-            Flip through the illustrated pages or use your keyboard arrow keys!
+            Flip through the illustrated pages or listen with the built-in voice narrator!
           </p>
         </div>
 
@@ -115,16 +164,35 @@ export default function StoryScroll() {
               ))}
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <span className="project-tag">{scene.chapter}</span>
-              <span className="font-mono text-xs" style={{ color: 'var(--berry-primary)', fontWeight: 600 }}>
-                Page {scene.pageNumber} of {STORY_SCENES.length}
-              </span>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                <span className="project-tag">{scene.chapter}</span>
+                <span className="font-mono text-xs" style={{ color: 'var(--berry-primary)', fontWeight: 600 }}>
+                  Page {scene.pageNumber} of {STORY_SCENES.length}
+                </span>
+              </div>
+
+              {/* Web Speech API Voice Narrator (Tier 3 Feature) */}
+              {hasSpeechSupport && (
+                <button
+                  type="button"
+                  className={`btn btn-pill ${isNarrating ? 'btn-primary' : 'btn-secondary'}`}
+                  style={{ fontSize: '0.75rem', padding: '0.28rem 0.65rem' }}
+                  onClick={handleToggleNarrate}
+                  aria-label={isNarrating ? 'Pause voice narration' : 'Listen to story read aloud'}
+                  title="Native browser voice narration"
+                >
+                  {isNarrating ? <VolumeX size={13} /> : <Volume2 size={13} color="var(--berry-primary)" />}
+                  <span>{isNarrating ? 'Stop Reading' : 'Listen Aloud 🎙️'}</span>
+                </button>
+              )}
             </div>
 
             <h3 style={{ fontSize: '1.8rem', margin: '0.4rem 0 1rem' }}>{scene.title}</h3>
 
-            <p className="story-text-content">{scene.text}</p>
+            <p className={`story-text-content ${isNarrating ? 'story-text-narrating' : ''}`}>
+              {scene.text}
+            </p>
 
             <blockquote
               style={{
@@ -159,7 +227,7 @@ export default function StoryScroll() {
                 </button>
               </div>
 
-              {/* Restart Button on Final Page (Tier 2 requirement) */}
+              {/* Restart Button on Final Page */}
               {currentScene === STORY_SCENES.length - 1 ? (
                 <button
                   type="button"

@@ -7,6 +7,7 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import CharacterProfile from './components/CharacterProfile';
 import Showcase from './components/Showcase';
+import DreamWeaver from './components/DreamWeaver';
 import StoryScroll from './components/StoryScroll';
 import SideQuests from './components/SideQuests';
 import Footer from './components/Footer';
@@ -107,7 +108,10 @@ export default function App() {
         {/* 3. Three Showcase Projects: Lullaby Lab, Nightlight, Radar Routes */}
         <Showcase />
 
-        {/* 4. Three Story Scenes */}
+        {/* 4. Tier 3 Feature: Pip's Dream Weaver Lab */}
+        <DreamWeaver />
+
+        {/* 5. Three Story Scenes with Web Speech Narration */}
         <StoryScroll />
 
         {/* 5. Early-Web Side Quests: Odometer, Guestbook Wall, Chaos Mode */}
