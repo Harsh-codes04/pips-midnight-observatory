@@ -3,11 +3,17 @@
 > **Official Hackathon Submission for "Baby's First Website" (17–19 October 2026) by haX.baby**  
 > **Track:** Track 1 — Pip, The Skull Baby ("Same Baby, 1,000 Websites")  
 > **Live Demo:** `https://pips-midnight-observatory-chi.vercel.app/` (Local dev server)  
-> **Tech Stack:** React 19, Vite 6, Pure Vanilla CSS, Web Audio API, Lucide Icons, Canvas-Confetti  
+> **Tech Stack:** React 19, Vite 6, Pure Vanilla CSS, Web Audio API, Lucide Icons, Canvas-Confetti
+
+---
 
 ### ✨ Live Demo
 [🚀 Visit the live Website]
 https://pips-midnight-observatory-chi.vercel.app/
+[Presentation of project🎁✨]
+https://pips-midnight-observatory-chi.vercel.app/slides.html
+[📽️ Video Presentation of Project]
+https://drive.google.com/drive/folders/1vuYZ5JJHtXbVMWpo-b9Kpj4QAM0jZ4gv?usp=sharing
 
 
 ---
