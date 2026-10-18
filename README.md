@@ -117,7 +117,7 @@ Our submission is engineered to maximize every point of the official **4-tier ju
 ### Setup & Run
 ```bash
 # 1. Navigate to the project root
-cd C:\Users\Hp\.gemini\antigravity\scratch\babys-first-website
+babys-first-website
 
 # 2. Install dependencies
 npm install
