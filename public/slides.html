@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pip's Midnight Observatory — Hackathon Presentation Slides</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Fredoka:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-cream: #fff8f1;
+      --berry-primary: #a34063;
+      --berry-dark: #382229;
+      --berry-soft: #fbf0f4;
+      --berry-border: #f0cfdb;
+      --amber-gold: #e88c1f;
+      --midnight-bg: #0d0914;
+      --font-serif: 'Fraunces', Georgia, serif;
+      --font-body: 'Fredoka', cursive, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #2b1f24;
+      font-family: var(--font-body);
+      color: var(--berry-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem 4rem;
+      min-height: 100vh;
+    }
+
+    .toolbar {
+      position: sticky;
+      top: 1rem;
+      z-index: 100;
+      background: rgba(255, 248, 241, 0.95);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--berry-border);
+      border-radius: 100px;
+      padding: 0.6rem 1.4rem;
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+      margin-bottom: 2rem;
+    }
+
+    .toolbar span {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--berry-primary);
+    }
+
+    .toolbar button {
+      background: var(--berry-primary);
+      color: white;
+      border: none;
+      padding: 0.4rem 1rem;
+      border-radius: 50px;
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .toolbar button:hover {
+      background: #862d4e;
+      transform: translateY(-1px);
+    }
+
+    .slides-container {
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+      width: 100%;
+      max-width: 960px;
+    }
+
+    .slide {
+      background: var(--bg-cream);
+      border-radius: 20px;
+      aspect-ratio: 16 / 9;
+      width: 100%;
+      padding: 3rem 3.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+      border: 1px solid var(--berry-border);
+    }
+
+    .slide-dark {
+      background: var(--midnight-bg);
+      color: #fff8f1;
+      border-color: #3b253b;
+    }
+
+    .slide-dark .slide-number,
+    .slide-dark .slide-footer {
+      color: #9d8896;
+    }
+
+    .slide-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .slide-kicker {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--amber-gold);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .slide-number {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: #a68994;
+      font-weight: 600;
+    }
+
+    .slide-title {
+      font-family: var(--font-serif);
+      font-size: 2.4rem;
+      line-height: 1.15;
+      color: var(--berry-primary);
+      margin-top: 0.5rem;
+    }
+
+    .slide-dark .slide-title {
+      color: #fca5a5;
+    }
+
+    .slide-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin: 1.2rem 0;
+    }
+
+    .slide-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      color: #a68994;
+      border-top: 1px dashed var(--berry-border);
+      padding-top: 0.8rem;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2rem;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .feature-card {
+      background: white;
+      border: 1px solid var(--berry-border);
+      border-radius: 12px;
+      padding: 1rem 1.2rem;
+      box-shadow: 0 4px 12px rgba(56, 34, 41, 0.05);
+    }
+
+    .slide-dark .feature-card {
+      background: #191224;
+      border-color: #3b253b;
+      color: #fff8f1;
+    }
+
+    .feature-title {
+      font-weight: 600;
+      font-size: 1.05rem;
+      margin-bottom: 0.3rem;
+      color: var(--berry-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .slide-dark .feature-title {
+      color: #f472b6;
+    }
+
+    .feature-desc {
+      font-size: 0.85rem;
+      line-height: 1.45;
+      color: #5c4033;
+    }
+
+    .slide-dark .feature-desc {
+      color: #d1c4cb;
+    }
+
+    .tagline-callout {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-style: italic;
+      color: var(--berry-primary);
+      border-left: 4px solid var(--amber-gold);
+      padding-left: 1rem;
+      margin: 1rem 0;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      background: var(--berry-soft);
+      color: var(--berry-primary);
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      font-family: var(--font-mono);
+      margin-right: 0.4rem;
+    }
+
+    /* Print styling to export cleanly to PDF */
+    @media print {
+      body {
+        background: none;
+        padding: 0;
+      }
+      .toolbar {
+        display: none;
+      }
+      .slides-container {
+        gap: 0;
+        max-width: none;
+      }
+      .slide {
+        page-break-after: always;
+        break-after: page;
+        box-shadow: none;
+        border: none;
+        border-radius: 0;
+        height: 100vh;
+        width: 100vw;
+        aspect-ratio: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Controls for the user -->
+  <div class="toolbar">
+    <span>✨ Pip's Midnight Observatory — Slide Deck</span>
+    <button onclick="window.print()">🖨️ Save as PDF / Print</button>
+  </div>
+
+  <div class="slides-container">
+
+    <!-- SLIDE 1: Title Slide -->
+    <div class="slide">
+      <div class="slide-header">
+        <div class="slide-kicker">✦ Baby's First Website Hackathon (haX.baby)</div>
+        <div class="slide-number">Slide 01 / 07</div>
+      </div>
+      <div class="slide-body grid-2">
+        <div>
+          <div style="font-size: 0.95rem; font-weight: 600; color: var(--amber-gold); margin-bottom: 0.4rem;">
+            Track 1: Pip the Skull Baby
+          </div>
+          <h1 class="slide-title" style="font-size: 2.8rem; margin-bottom: 1rem;">
+            Pip's Midnight Observatory
+          </h1>
+          <div class="tagline-callout">
+            "Small baby. Enormous dreams."
+          </div>
+          <p style="font-size: 0.95rem; line-height: 1.6; color: #5c4033; margin-top: 1rem;">
+            An interactive bedtime portfolio, digital toy, and celestial observatory built for Pip—Junior Dream Engineer at Midnight Nursery.
+          </p>
+        </div>
+        <div style="text-align: center;">
+          <img src="/assets/pip_avatar_cloud.png" alt="Pip on a cloud" style="max-height: 250px; filter: drop-shadow(0 15px 25px rgba(163,64,99,0.2));">
+        </div>
+      </div>
+      <div class="slide-footer">
+        <div>Live: pips-midnight-observatory-chi.vercel.app</div>
+        <div>GitHub: github.com/Harsh-codes04/pips-midnight-observatory</div>
+      </div>
+    </div>
+
+    <!-- SLIDE 2: Character Lore & Dossier -->
+    <div class="slide">
+      <div class="slide-header">
+        <div class="slide-kicker">✦ Track 1 Canon & Character Identity</div>
+        <div class="slide-number">Slide 02 / 07</div>
+      </div>
+      <div class="slide-body grid-2">
+        <div>
+          <h2 class="slide-title" style="font-size: 2.2rem; margin-bottom: 0.8rem;">Meet Pip the Skull Baby</h2>
+          <p style="font-size: 0.92rem; line-height: 1.5; color: #5c4033; margin-bottom: 1rem;">
+            A sleepy, gentle sprite working the night shift (22:00 – 05:00 IST). When the sun sets, Pip crafts lullabies and nightlights so creatures can sleep peacefully.
+          </p>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.88rem;">
+            <div><strong>Species:</strong> Skull Baby (Dreamweaver Sprite)</div>
+            <div><strong>Appearance:</strong> Smooth round skull, amber glowing pupils, starry nightcap</div>
+            <div><strong>Vibe:</strong> 100% Cozy, 0% Creepy</div>
+            <div><strong>Quirks:</strong> Chamomile milk drops, brass star pins, contagion yawns</div>
+          </div>
+        </div>
+        <div style="text-align: center;">
+          <img src="/assets/pip_portrait.png" alt="Pip portrait" style="max-height: 250px; border-radius: 16px; border: 3px solid var(--berry-border); box-shadow: 0 10px 20px rgba(0,0,0,0.08);">
+        </div>
+      </div>
+      <div class="slide-footer">
+        <div>Golden Rule: Story Over Text (< 150 words per scene)</div>
+        <div>Midnight Nursery Staff Registry #1024</div>
+      </div>
+    </div>
+
+    <!-- SLIDE 3: Four Interactive Inventions -->
+    <div class="slide">
+      <div class="slide-header">
+        <div class="slide-kicker">✦ Core Projects Showcase</div>
+        <div class="slide-number">Slide 03 / 07</div>
+      </div>
+      <div class="slide-body">
+        <h2 class="slide-title" style="font-size: 2rem; margin-bottom: 1.2rem;">What Pip Does: Four Inventions</h2>
+        <div class="grid-4">
+          <div class="feature-card">
+            <div class="feature-title">🎵 Lullaby Lab Music Box</div>
+            <div class="feature-desc">Web Audio API dual-harmonic synth, spinning vinyl disc with star spindle, play/pause/stop, master volume slider, and 6 pentatonic keys (C5 to C6).</div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-title">🏮 Nightlight Workshop</div>
+            <div class="feature-desc">Official porcelain lantern render with 20%–100% brightness slider, 4 bedside color auras (Amber, Rose, Lavender, Mint), and dedicated Reset button.</div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-title">🗺️ Dream Delivery Radar</div>
+            <div class="feature-desc">Animated SVG flight route connecting 4 canonical stops (Nursery, Moonberry Cottage, Cloud Castle, Sleepy Star Village) with an active glowing dream parcel.</div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-title">🔔 Playable Star Rattle</div>
+            <div class="feature-desc">Early-web tactile wooden rattle with moonstone beads, interactive wobble physics, and synthesized shaker chimes on click or keyboard press.</div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <div>Meets & Exceeds: Minimum 3 showcase projects required by haX.baby</div>
+        <div>100% Native Web Audio Synthesis</div>
+      </div>
+    </div>
+
+    <!-- SLIDE 4: Tier 3 Legendary Innovations -->
+    <div class="slide slide-dark">
+      <div class="slide-header">
+        <div class="slide-kicker">✦ Tier 3: Legendary Standout</div>
+        <div class="slide-number">Slide 04 / 07</div>
+      </div>
+      <div class="slide-body">
+        <h2 class="slide-title" style="font-size: 2rem; margin-bottom: 1.2rem;">Going the Extra Mile: Tier 3 Features</h2>
+        <div class="grid-3">
+          <div class="feature-card">
+            <div class="feature-title">🔮 Dream Weaver Lab</div>
+            <div class="feature-desc">Interactive prescription generator: mix Essence, Companion & Sanctuary. Synthesizes a 4-chord chime and outputs a numbered prescription tuned to 432 Hz Solfeggio with 1-click clipboard copy.</div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-title">🎙️ Web Speech Story Narrator</div>
+            <div class="feature-desc">Built-in read-aloud voice narration with gentle bedtime cadence (0.82 rate), synchronized shining text glow, page-turn flip transitions, and arrow-key support.</div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-title">😴 Cozy Meter & Visitor Memory</div>
+            <div class="feature-desc">Interactive tuck-in meter advancing Pip into Deep Slumber with delta tones. LocalStorage memory remembers returning visitors with custom greeting badges.</div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <div>Zero External API Dependencies</div>
+        <div>Offline-First Client Architecture</div>
+      </div>
+    </div>
+
+    <!-- SLIDE 5: Early-Web Soul & Whimsical Side Quests -->
+    <div class="slide">
+      <div class="slide-header">
+        <div class="slide-kicker">✦ Early-Web Soul (30% Rubric Weight)</div>
+        <div class="slide-number">Slide 05 / 07</div>
+      </div>
+      <div class="slide-body">
+        <h2 class="slide-title" style="font-size: 2rem; margin-bottom: 1.2rem;">Whimsical Early-Web Toys & Side Quests</h2>
+        <div class="grid-3">
+          <div class="feature-card">
+            <div class="feature-title">📟 Vintage Odometer</div>
+            <div class="feature-desc">Rolling mechanical visitor ticker with explicit transparency notice: <em>Simulated browser demo odometer</em>.</div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-title">⚡ Playful Chaos Mode</div>
+            <div class="feature-desc">90s retro shake toggle adding an earthquake wobble to the observatory, with an instant button to return to peace.</div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-title">🛂 Bedtime Stamp Passport</div>
+            <div class="feature-desc">Sticker collection album where collecting all 4 stamps unlocks the golden <em>Certified Master Dreamer</em> seal.</div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-title">🏮 Lantern Beam Spotlight</div>
+            <div class="feature-desc">Navbar toggle that converts the cursor into an amber flashlight spotlight illuminating dark page elements.</div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-title">📝 Local Wish Wall</div>
+            <div class="feature-desc">Privacy-first visitor memory guestbook. Stored locally with presets and deletion controls.</div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-title">🐣 Double Easter Eggs</div>
+            <div class="feature-desc">4-click Pip cloud nap & 3-click moon theme toggle reveal secret diary modal + star confetti.</div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <div>Includes 88x31 community badges: PIP-APPROVED, NO NIGHTMARES, LULLABY 1.0</div>
+        <div>Accessible Mute Control</div>
+      </div>
+    </div>
+
+    <!-- SLIDE 6: Technical Architecture & Clean Craft -->
+    <div class="slide">
+      <div class="slide-header">
+        <div class="slide-kicker">✦ Technical Architecture & Accessibility</div>
+        <div class="slide-number">Slide 06 / 07</div>
+      </div>
+      <div class="slide-body grid-2">
+        <div>
+          <h2 class="slide-title" style="font-size: 2.1rem; margin-bottom: 0.8rem;">Clean Craft & Performance</h2>
+          <div style="font-size: 0.9rem; line-height: 1.6; color: #5c4033;">
+            <p><strong>Stack:</strong> React 19, Vite 6, Pure Vanilla CSS, Web Audio & Web Speech APIs.</p>
+            <p><strong>Zero External Audio CDNs:</strong> Eliminates broken audio requests or latency.</p>
+            <p><strong>Fits in Tiny Hands:</strong> Fluid responsive breakpoints (900px tablet, 640px phone) with mobile drawer navigation.</p>
+            <p><strong>A11y First:</strong> Full keyboard navigation, visible focus rings, and full <code>prefers-reduced-motion</code> compliance.</p>
+          </div>
+        </div>
+        <div style="background: #fdf2ea; border: 1px solid var(--berry-border); border-radius: 14px; padding: 1.2rem;">
+          <div style="font-family: var(--font-mono); font-size: 0.85rem; font-weight: 600; color: var(--berry-primary); margin-bottom: 0.6rem;">
+            ✓ Automated Verification Suite
+          </div>
+          <div style="font-family: var(--font-mono); font-size: 0.78rem; line-height: 1.7; color: #10b981;">
+            [PASS] Dev Server Home: HTTP 200<br>
+            [PASS] Official Assets (5/5): HTTP 200<br>
+            [PASS] Web Audio Lifecycle: Clean<br>
+            [PASS] Responsive Breakpoints: Verified<br>
+            [PASS] Reduced Motion Query: Verified<br>
+            [PASS] Production Build: Exit Code 0
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <div>Sandbox Etiquette: Friendly, Accessible, Responsibly Built</div>
+        <div>Fast 60fps Performance</div>
+      </div>
+    </div>
+
+    <!-- SLIDE 7: Summary & Conclusion -->
+    <div class="slide slide-dark" style="text-align: center; justify-content: center; gap: 1.5rem;">
+      <div class="slide-kicker" style="justify-content: center;">✦ Baby's First Website · Track 1 Submission</div>
+      <h1 class="slide-title" style="font-size: 3rem; margin: 0;">
+        "Small baby. Enormous dreams."
+      </h1>
+      <p style="font-size: 1.1rem; max-width: 650px; margin: 0 auto; color: #fdf2ea; line-height: 1.6;">
+        Pip's Midnight Observatory honors the haX.baby vision: playful early-web warmth, rich audio craftsmanship, accessible storytelling, and delightful surprises.
+      </p>
+      <div style="display: flex; justify-content: center; gap: 1.5rem; margin-top: 1rem;">
+        <span class="pill" style="font-size: 0.9rem; padding: 0.5rem 1.2rem; background: #2a1528; color: #f472b6; border: 1px solid #4d2345;">
+          🌐 https://pips-midnight-observatory-chi.vercel.app
+        </span>
+        <span class="pill" style="font-size: 0.9rem; padding: 0.5rem 1.2rem; background: #2a1528; color: #fde047; border: 1px solid #4d2345;">
+          ⭐ Track 1 — Pip the Skull Baby
+        </span>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
