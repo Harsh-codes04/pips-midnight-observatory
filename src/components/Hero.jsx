@@ -20,6 +20,23 @@ export default function Hero({ onPipClick }) {
   const [reducedMotion, setReducedMotion] = useState(false);
   const [cozyMeter, setCozyMeter] = useState(20); // 0 to 100%
   const [isSleeping, setIsSleeping] = useState(false);
+  const [isReturningVisitor, setIsReturningVisitor] = useState(false);
+  const [visitCount, setVisitCount] = useState(1);
+
+  // Check returning-visitor status in localStorage (Tier 3: Character remembers visitor)
+  useEffect(() => {
+    try {
+      const storedVisits = parseInt(localStorage.getItem('pip_visitor_visits') || '0', 10);
+      const nextVisits = storedVisits + 1;
+      localStorage.setItem('pip_visitor_visits', nextVisits.toString());
+      setVisitCount(nextVisits);
+      if (storedVisits > 0) {
+        setIsReturningVisitor(true);
+      }
+    } catch {
+      // Fallback
+    }
+  }, []);
 
   useEffect(() => {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -113,6 +130,28 @@ export default function Hero({ onPipClick }) {
         <div className="hero-grid">
           {/* Left Column: Identity & Bio */}
           <div>
+            {/* Tier 3: Returning Visitor Recognition */}
+            {isReturningVisitor && (
+              <div
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  background: 'var(--berry-soft)',
+                  border: '1px solid var(--berry-border)',
+                  color: 'var(--berry-primary)',
+                  padding: '0.28rem 0.75rem',
+                  borderRadius: '100px',
+                  fontSize: '0.78rem',
+                  fontFamily: 'var(--font-mono)',
+                  fontWeight: 600,
+                  marginBottom: '0.8rem',
+                }}
+              >
+                <span>⭐ Welcome back, friend! (Visit #{visitCount})</span>
+              </div>
+            )}
+
             <div className="kicker">
               <Moon size={14} /> Junior Dream Engineer · Midnight Nursery
             </div>
