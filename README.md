@@ -71,16 +71,23 @@ Our submission is engineered to maximize every point of the official **4-tier ju
 1. **Tier 3 Character Reactions:**
    * Gentle 3D perspective card tilt as pointer explores Pip's hero stage.
    * Bounded glowing amber pupil tracking (max ±4.5px).
+   * **Pip Cozy Comfort Meter:** Interactive petting/tuck-in meter advancing from 20% to 100% (😴 Deep Slumber with delta waves).
+   * **Returning Visitor Memory:** Custom welcome-back greeting recognition badge (*"Welcome back, friend! Visit #X"*) stored locally.
    * **Interactive Sleepy Whispers:** Clicking or tapping Pip triggers a joyful hop animation and floating speech bubble cycling through cozy bedtime whispers.
-2. **Tier 2 Standout Lantern Beam:** Cursor-following amber spotlight mode toggled via the flashlight button in the navbar.
-3. **Double Easter Eggs:**
+2. **Pip's Dream Weaver Lab (Tier 3 Standout):**
+   * Hands-on bedside recipe generator: choose dream essences, companions, and sanctuaries.
+   * Synthesizes 4-step harmonic chords, formats official Bedtime Prescriptions tuned to 432 Hz Solfeggio, supports one-click clipboard copying, and saves recent dreams locally.
+3. **Built-in Bedtime Voice Narrator (Tier 3 Standout):**
+   * Native offline Web Speech API read-aloud narrator with gentle sleepy pacing and synchronized text illumination.
+4. **Tier 2 Standout Lantern Beam:** Cursor-following amber spotlight mode toggled via the flashlight button in the navbar.
+5. **Double Easter Eggs:**
    * Clicking Pip 4 times triggers star confetti + Pip's secret bedtime diary modal.
    * Clicking the theme toggle moon 3 times also reveals the secret easter egg.
-4. **Playable Star Rattle Toy:** Wind-carved wooden rattle with moonstone beads, click/keyboard shake, wobble animation, and synthesized shaker chimes.
+6. **Playable Star Rattle Toy:** Wind-carved wooden rattle with moonstone beads, click/keyboard shake, wobble animation, and synthesized shaker chimes.
 
 ### IV. Clean Craft & Accessibility (15%)
 * **Zero Console Errors:** Clean runtime with robust Web Audio resume checks.
-* **Full Keyboard Nav:** Visible `:focus-visible` outlines on all interactive elements.
+* **Full Keyboard Nav:** Visible `:focus-visible` outlines on all interactive elements and arrow-key page turning.
 * **Reduced Motion Support:** All animations immediately deactivate when `prefers-reduced-motion: reduce` is detected.
 * **Touch Device Optimization:** Sparkle trail automatically simplifies on touchscreens to ensure smooth scrolling.
 * **Palette Fidelity:** Warm cream (`#fff8f1`), rich berry (`#a34063`), and warm brown (`#5c4033`).
@@ -88,7 +95,20 @@ Our submission is engineered to maximize every point of the official **4-tier ju
 
 ---
 
-## 🛠️ 3. Installation & Local Development
+## 🕊️ 3. Sandbox Etiquette Compliance Checklist
+
+| Sandbox Principle | Official Requirement | Project Implementation |
+| :--- | :--- | :--- |
+| **Friendly Sandbox** | Welcoming to all skill levels, zero gatekeeping. | Clean React 19 + pure Vanilla CSS architecture; beginner-friendly, readable components. |
+| **Solo or Squad** | Up to 3 builders in team workspace. | Fully portable git repository with zero proprietary environment locks. |
+| **Fresh Sprint Commits** | Built during sprint with public commit history (Oct 17–19). | Granular, milestone-based git commit log across all tiers. |
+| **Fits in Tiny Hands** | Whimsical early-web style that renders smoothly on phones & tablets. | Touch-friendly targets (min 44px), mobile drawer menu, and verified fluid breakpoints (900px, 640px). |
+| **Paced Building** | Focus on one delightfully creative idea rather than boiling the ocean. | Cohesive vision: "Pip's Midnight Observatory — Junior Dream Engineer at Midnight Nursery". |
+| **Gentle on the Ears** | Nostalgic audio (+3 bonus points!) with accessible, easy-to-spot mute control. | Web Audio synthesizer with fixed floating sound button, navbar mute toggle, and volume slider. |
+
+---
+
+## 🛠️ 4. Installation & Local Development
 
 ### Prerequisites
 * Node.js (v18 or higher recommended)
@@ -114,13 +134,13 @@ http://localhost:3000
 # Verify clean build (compiles to dist/)
 npm run build
 
-# Preview production build locally
-npm run preview
+# Run automated hackathon verification suite
+node test-app.js
 ```
 
 ---
 
-## 📁 4. Project Structure
+## 📁 5. Project Structure
 ```
 babys-first-website/
 ├── public/
@@ -133,15 +153,16 @@ babys-first-website/
 ├── src/
 │   ├── components/
 │   │   ├── CharacterProfile.jsx    # Canonical dossier & staff card
+│   │   ├── DreamWeaver.jsx         # Tier 3 dream prescription generator
 │   │   ├── EasterEggModal.jsx      # Secret Pip diary & starburst
 │   │   ├── Footer.jsx              # Early-web 88x31 badges & copyright
-│   │   ├── Hero.jsx                # 3D tilt, pupil tracking, speech whispers
+│   │   ├── Hero.jsx                # 3D tilt, pupil tracking, cozy meter, visitor memory
 │   │   ├── LanternBeam.jsx         # Tier 2 flashlight cursor spotlight
 │   │   ├── Navbar.jsx              # Navigation drawer, theme & audio controls
 │   │   ├── Showcase.jsx            # 4 interactive inventions (Music Box, Lantern, Radar, Rattle)
 │   │   ├── SideQuests.jsx          # Odometer, Chaos mode, Wish Wall, Stamp Passport
 │   │   ├── SparkleTrail.jsx        # Lightweight stardust cursor particles
-│   │   └── StoryScroll.jsx         # 3-scene illustrated bedtime storybook
+│   │   └── StoryScroll.jsx         # 3-scene illustrated storybook + Web Speech narrator
 │   ├── styles/
 │   │   └── index.css               # Comprehensive responsive design & animations
 │   ├── utils/
@@ -149,14 +170,15 @@ babys-first-website/
 │   ├── App.jsx                     # Root application container & state orchestration
 │   └── main.jsx                    # React 19 entry point
 ├── index.html                      # Semantic HTML5 entry with preconnected Google Fonts
+├── test-app.js                     # Automated verification test script
 ├── package.json                    # Project dependencies and scripts
 └── vite.config.js                  # Vite bundler configuration
 ```
 
 ---
 
-## 📜 5. Asset Attributions & Canon Credits
+## 📜 6. Asset Attributions & Canon Credits
 * **Character & Artwork:** Official Pip assets courtesy of **haX.baby** (`pip_avatar_cloud.png`, `pip_lullaby_box.png`, `pip_dream_lantern.png`, `pip_portrait.png`, `pip.jpg`).
 * **Visual Direction:** Warm cream (`#fff8f1`), rich berry (`#a34063`), and midnight plum (`#1e1329`).
 * **Typography:** Fraunces (editorial serif), Fredoka (cozy bubble accent), JetBrains Mono (monospace data).
-* **Audio:** 100% native Web Audio API real-time synthesis.
+* **Audio & Speech:** 100% native Web Audio API and Web Speech API synthesis.
