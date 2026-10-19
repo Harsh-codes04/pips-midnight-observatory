@@ -1082,10 +1082,12 @@ h1, h2, h3, h4, .font-serif {
 }
 
 /* Character Profile */
+/* Character Profile */
 .profile-grid {
   display: grid;
   grid-template-columns: 1fr 1.2fr;
   gap: 2rem;
+  align-items: start;
 }
 
 .profile-card {
@@ -1094,12 +1096,16 @@ h1, h2, h3, h4, .font-serif {
   border-radius: 24px;
   padding: 2rem;
   box-shadow: var(--shadow-card);
+  min-width: 0;
+  overflow: hidden;
 }
 
 .profile-badge-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
   margin-bottom: 1.2rem;
 }
 
@@ -1154,6 +1160,7 @@ h1, h2, h3, h4, .font-serif {
 
 .profile-specs {
   flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
@@ -1162,17 +1169,22 @@ h1, h2, h3, h4, .font-serif {
 .spec-row {
   display: flex;
   justify-content: space-between;
+  align-items: baseline;
   font-size: 0.86rem;
   gap: 0.5rem;
+  padding: 0.2rem 0;
+  border-bottom: 1px dotted var(--border-subtle);
 }
 
 .spec-label {
   color: var(--text-muted);
+  flex-shrink: 0;
 }
 
 .spec-val {
   font-weight: 600;
   text-align: right;
+  word-break: break-word;
 }
 
 .traits-row {
@@ -1195,6 +1207,7 @@ h1, h2, h3, h4, .font-serif {
   padding: 0.35rem 0.75rem;
   border-radius: 9999px;
   color: var(--text-main);
+  max-width: 100%;
 }
 
 .quirks-nav {
@@ -1203,6 +1216,7 @@ h1, h2, h3, h4, .font-serif {
   overflow-x: auto;
   margin-bottom: 1rem;
   padding-bottom: 0.4rem;
+  -webkit-overflow-scrolling: touch;
 }
 
 .quirk-tab-btn {
@@ -1216,6 +1230,7 @@ h1, h2, h3, h4, .font-serif {
   cursor: pointer;
   white-space: nowrap;
   transition: all 0.2s ease;
+  flex-shrink: 0;
 }
 
 .quirk-tab-btn:hover {
@@ -1758,20 +1773,68 @@ h1, h2, h3, h4, .font-serif {
     font-size: 1rem;
   }
   .profile-card {
-    padding: 1.35rem;
-    border-radius: 20px;
+    padding: 1.15rem 1rem;
+    border-radius: 18px;
+  }
+  .profile-badge-row {
+    margin-bottom: 0.8rem;
   }
   .profile-main-info {
-    flex-direction: column;
-    text-align: center;
+    flex-direction: row;
+    text-align: left;
+    align-items: center;
+    gap: 0.85rem;
+    margin-bottom: 1rem;
+  }
+  .profile-avatar-box {
+    width: 68px;
+    height: 68px;
+    border-radius: 14px;
+  }
+  .profile-specs {
+    gap: 0.25rem;
   }
   .spec-row {
-    flex-direction: column;
-    text-align: center;
-    gap: 0.2rem;
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+    font-size: 0.8rem;
+    gap: 0.4rem;
+    padding: 0.15rem 0;
+  }
+  .spec-label {
+    font-size: 0.76rem;
   }
   .spec-val {
-    text-align: center;
+    text-align: right;
+    font-size: 0.8rem;
+  }
+  .traits-row {
+    gap: 0.35rem;
+    margin-top: 0.8rem;
+    padding-top: 0.8rem;
+    justify-content: center;
+  }
+  .trait-chip {
+    padding: 0.25rem 0.55rem;
+    font-size: 0.7rem;
+  }
+  .quirks-nav {
+    gap: 0.3rem;
+    margin-bottom: 0.8rem;
+  }
+  .quirk-tab-btn {
+    padding: 0.3rem 0.65rem;
+    font-size: 0.74rem;
+  }
+  .quirk-content-box {
+    padding: 0.9rem;
+    border-radius: 12px;
+    margin-bottom: 0.8rem;
+  }
+  .canon-guarantee {
+    padding: 0.7rem 0.9rem;
+    border-radius: 12px;
   }
   .synth-keys-grid {
     gap: 0.25rem;
