@@ -63,7 +63,7 @@ export default function Navbar({
             height="36"
           />
           <div className="nav-title">
-            Pip <span>· Dream Engineer</span>
+            Pip <span className="nav-subtitle">· Dream Engineer</span>
           </div>
         </a>
 

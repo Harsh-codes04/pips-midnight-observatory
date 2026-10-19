@@ -1612,6 +1612,8 @@ h1, h2, h3, h4, .font-serif {
 
 
 /* Responsive Media Queries */
+
+/* Tablet & Medium Screens (max-width: 900px) */
 @media (max-width: 900px) {
   .hero-grid {
     grid-template-columns: 1fr;
@@ -1623,6 +1625,10 @@ h1, h2, h3, h4, .font-serif {
   }
   .hero-actions {
     justify-content: center;
+  }
+  .cozy-meter-container {
+    margin-left: auto !important;
+    margin-right: auto !important;
   }
   .profile-grid {
     grid-template-columns: 1fr;
@@ -1639,18 +1645,121 @@ h1, h2, h3, h4, .font-serif {
   }
 }
 
+/* Small Tablets & Large Phones (max-width: 768px) */
+@media (max-width: 768px) {
+  .wrap {
+    padding: 0 1.2rem;
+  }
+  .section {
+    padding: 3.8rem 0;
+  }
+  .hero-section {
+    padding: 3rem 0 2.5rem;
+  }
+  .section-header {
+    margin-bottom: 2.5rem;
+  }
+  .projects-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .stamp-passport-card {
+    padding: 1.4rem 1.2rem;
+  }
+  .stamps-grid {
+    gap: 0.8rem;
+  }
+  .bedtime-stamp {
+    flex: 1 1 calc(50% - 0.8rem);
+    max-width: none;
+    min-height: 95px;
+  }
+}
+
+/* Standard Mobile Phones (max-width: 640px) */
 @media (max-width: 640px) {
+  .wrap {
+    padding: 0 1rem;
+  }
+  .nav-container {
+    height: 3.75rem;
+  }
+  .nav-title {
+    font-size: 1.05rem;
+  }
+  .nav-avatar-mini {
+    width: 2rem;
+    height: 2rem;
+  }
+  .nav-actions {
+    gap: 0.35rem;
+  }
+  .icon-btn {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
   .hero-title {
-    font-size: 2.2rem;
+    font-size: clamp(2rem, 7.5vw, 2.5rem);
+  }
+  .hero-bio {
+    font-size: 1.02rem;
+  }
+  .hero-actions .btn {
+    width: 100%;
+  }
+  .character-stage {
+    max-width: 100%;
+    overflow: visible;
+  }
+  .avatar-main-img {
+    max-width: 280px;
+  }
+  .avatar-halo {
+    width: 260px;
+    height: 260px;
+  }
+  .badge-top-left {
+    top: -5px;
+    left: 5px;
+    font-size: 0.72rem;
+    padding: 0.35rem 0.65rem;
+  }
+  .badge-bottom-right {
+    bottom: -5px;
+    right: 5px;
+    font-size: 0.72rem;
+    padding: 0.35rem 0.65rem;
+  }
+  .pip-speech-bubble {
+    font-size: 0.78rem;
+    padding: 0.45rem 0.8rem;
+    max-width: 90vw;
+    white-space: normal;
+    text-align: center;
   }
   .project-card {
-    padding: 1.4rem;
+    padding: 1.35rem;
+    border-radius: 20px;
+  }
+  .project-img-frame {
+    height: 180px;
+  }
+  .project-preview-img {
+    max-height: 150px;
   }
   .story-book-frame {
-    padding: 1.5rem;
+    padding: 1.35rem;
+    border-radius: 20px;
+  }
+  .story-portrait-img {
+    max-width: 220px;
+  }
+  .story-text-content {
+    font-size: 1rem;
   }
   .profile-card {
-    padding: 1.4rem;
+    padding: 1.35rem;
+    border-radius: 20px;
   }
   .profile-main-info {
     flex-direction: column;
@@ -1659,6 +1768,7 @@ h1, h2, h3, h4, .font-serif {
   .spec-row {
     flex-direction: column;
     text-align: center;
+    gap: 0.2rem;
   }
   .spec-val {
     text-align: center;
@@ -1669,12 +1779,116 @@ h1, h2, h3, h4, .font-serif {
   .synth-key {
     padding: 0.6rem 0.1rem;
     font-size: 0.7rem;
+    min-height: 48px;
+  }
+  .guestbook-form {
+    flex-direction: column;
+  }
+  .guestbook-input {
+    width: 100%;
+  }
+  .guestbook-form .btn {
+    width: 100%;
   }
   .sound-fixed-btn {
-    bottom: 1rem;
-    right: 1rem;
+    bottom: 0.85rem;
+    right: 0.85rem;
     padding: 0.45rem 0.8rem;
-    font-size: 0.75rem;
+    font-size: 0.74rem;
+  }
+  .modal-content {
+    padding: 1.6rem 1.2rem;
+    border-radius: 22px;
+  }
+  .early-web-badges {
+    gap: 0.5rem;
+  }
+  .retro-88x31-badge {
+    width: 100px;
+    height: 29px;
+    font-size: 0.6rem;
+  }
+}
+
+/* Compact Mobile Phones (max-width: 430px) */
+@media (max-width: 430px) {
+  .nav-title .nav-subtitle {
+    display: none;
+  }
+  .hero-tagline-quote {
+    font-size: 0.92rem;
+    padding: 0.3rem 0.75rem;
+  }
+  .ingredient-options {
+    grid-template-columns: 1fr 1fr;
+  }
+  .ingredient-chip {
+    padding: 0.5rem 0.6rem;
+    font-size: 0.78rem;
+  }
+  .dream-cert-icons {
+    font-size: 1.3rem;
+  }
+  .odometer-digit {
+    width: 2rem;
+    height: 2.7rem;
+    font-size: 1.4rem;
+  }
+  .floating-badge {
+    position: static;
+    margin: 0.4rem auto;
+    display: inline-flex;
+  }
+  .character-stage {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .avatar-halo {
+    display: none;
+  }
+}
+
+/* Extra Small Phones (max-width: 360px and 320px) */
+@media (max-width: 360px) {
+  .wrap {
+    padding: 0 0.75rem;
+  }
+  .nav-actions {
+    gap: 0.2rem;
+  }
+  .icon-btn {
+    width: 2rem;
+    height: 2rem;
+  }
+  .hero-title {
+    font-size: 1.85rem;
+  }
+  .hero-bio {
+    font-size: 0.95rem;
+  }
+  .ingredient-options {
+    grid-template-columns: 1fr;
+  }
+  .stamps-grid {
+    flex-direction: column;
+  }
+  .bedtime-stamp {
+    width: 100%;
+  }
+  .odometer-digits {
+    gap: 0.2rem;
+  }
+  .odometer-digit {
+    width: 1.7rem;
+    height: 2.3rem;
+    font-size: 1.2rem;
+  }
+  .synth-keys-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .synth-key {
+    padding: 0.5rem 0.2rem;
   }
 }
 
