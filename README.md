@@ -10,10 +10,17 @@
 ### ✨ Live Demo
 [🚀 Visit the live Website]
 https://pips-midnight-observatory-chi.vercel.app/
+
+---
+
 [Presentation of project🎁✨]
 https://pips-midnight-observatory-chi.vercel.app/slides.html
+
+---
+
 [📽️ Video Presentation of Project]
 https://drive.google.com/drive/folders/1vuYZ5JJHtXbVMWpo-b9Kpj4QAM0jZ4gv?usp=sharing
+
 
 
 ---
